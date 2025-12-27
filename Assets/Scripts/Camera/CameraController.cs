@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     } 
     private void HandleMovementAndRotation()
     {
-        transform.Rotate(Vector3.up, GameInput.Instance.GetRotationDirection() * _rotateSpeed * GetAccelerationIfActive() * Time.deltaTime );
+        transform.Rotate(Vector3.up, GameInput.Instance.GetCameraRotationDirection() * _rotateSpeed * GetAccelerationIfActive() * Time.deltaTime );
         transform.Translate(GameInput.Instance.GetMoveDirection() * _moveSpeed * GetAccelerationIfActive()* Time.deltaTime );
         transform.position += transform.up * GameInput.Instance.GetFlyDirection() * _flySpeed * GetAccelerationIfActive() * Time.deltaTime;
 
