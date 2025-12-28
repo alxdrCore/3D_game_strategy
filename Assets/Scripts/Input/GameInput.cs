@@ -7,12 +7,16 @@ public class GameInput : MonoBehaviour
     public static GameInput Instance {get; private set;}
     private InputActions _inputActions;
     public event EventHandler OnBuildingPlacement;
+    public event EventHandler OnSelectionStarted;
+    public event EventHandler OnSelectionCanceled;
     private void Awake()
     {
         Instance = this;
         _inputActions = new InputActions();
         _inputActions.Enable();
         _inputActions.Building.Placement.performed += BuildingPlacement_performed;
+        _inputActions.Selection.Select.started += Selection_started;
+        _inputActions.Selection.Select.canceled += Selection_canceled;
     }
     public float GetCameraRotationDirection()
     {
@@ -54,6 +58,19 @@ public class GameInput : MonoBehaviour
     }
     public void BuildingPlacement_performed(InputAction.CallbackContext obj)
     {
+        Debug.Log("Building placement performed");
+
         OnBuildingPlacement?.Invoke(this, EventArgs.Empty);
+    }
+    public void Selection_started(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Selection is started");
+        OnSelectionStarted?.Invoke(this, EventArgs.Empty);
+    }
+    public void Selection_canceled(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Selection canceled");
+
+        OnSelectionCanceled?.Invoke(this, EventArgs.Empty);
     }
 }

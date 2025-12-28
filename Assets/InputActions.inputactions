@@ -214,6 +214,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Selection",
+            "id": "2148f36a-9d5c-4c48-8cdc-f0438f45c896",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "4eeaf498-3614-478e-a820-85d0b99b41c1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cae32148-f9ee-43d2-945a-090183aca7a7",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

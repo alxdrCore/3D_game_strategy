@@ -30,11 +30,11 @@ public class Rain : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(UnityEngine.Random.Range(20f,51f));
-            _isRaining = !_isRaining;
             if(_isRaining)
                 _ps.Stop();
             else
                 _ps.Play();
+            _isRaining = !_isRaining;
         }
     }
     private void OnValidate()
