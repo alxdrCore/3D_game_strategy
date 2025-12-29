@@ -6,6 +6,7 @@ public class ButtonPlaceBuilding : MonoBehaviour
 
     public void PlaceBuilding()
     {
+        StateHandler.Instance.SetState(new StateBuildingPlacement());
         Instantiate(_building, Vector3.zero, Quaternion.identity);
     }
 }

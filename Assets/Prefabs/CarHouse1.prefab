@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 09764aed4bcbae546bb312a7ab99fba1, type: 3}
       propertyPath: m_Name
-      value: CarHouse2
+      value: CarHouse1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -70,14 +70,41 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 09764aed4bcbae546bb312a7ab99fba1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -7300950756654184931}
+      addedObject: {fileID: 7268754067798877298}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 09764aed4bcbae546bb312a7ab99fba1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6270329493460867051}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 09764aed4bcbae546bb312a7ab99fba1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1819798296034437515}
   m_SourcePrefab: {fileID: 100100000, guid: 09764aed4bcbae546bb312a7ab99fba1, type: 3}
 --- !u!1 &720294761898834483 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 09764aed4bcbae546bb312a7ab99fba1, type: 3}
   m_PrefabInstance: {fileID: 377855507089639266}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-7300950756654184931
+--- !u!65 &7268754067798877298
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720294761898834483}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.0771422, y: 7.5436745, z: 10.101524}
+  m_Center: {x: 0.041242663, y: 3.7530472, z: 0.0000019817635}
+--- !u!114 &6270329493460867051
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,9 +113,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 720294761898834483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3e4a85edc604b842a54a0b25084faad, type: 3}
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlaceObject
-  _layer:
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
+  m_SerializedVersion: 0
+  m_Size: {x: 8.660271, y: 9.163583, z: 10.050835}
+  m_Center: {x: 0.018791199, y: 3.93146, z: 0.018791199}
+  m_Area: 0
+  m_AffectedAgents: ffffffff
+--- !u!114 &1819798296034437515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720294761898834483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea72d8636d33ae4fa6041cb6031f636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StateBuildingPlacement
+  _raycastLayer:
     serializedVersion: 2
     m_Bits: 64

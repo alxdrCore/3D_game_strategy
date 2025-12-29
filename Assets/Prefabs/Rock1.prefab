@@ -67,5 +67,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91856aa41f9432e49a439c0190f60c4f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8185771474833367732}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 91856aa41f9432e49a439c0190f60c4f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5632751153710126509}
   m_SourcePrefab: {fileID: 100100000, guid: 91856aa41f9432e49a439c0190f60c4f, type: 3}
+--- !u!1 &724291013968947414 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 91856aa41f9432e49a439c0190f60c4f, type: 3}
+  m_PrefabInstance: {fileID: 489866545597339015}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &8185771474833367732
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724291013968947414}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8.501207, y: 4.9380956, z: 7.1227674}
+  m_Center: {x: 0.38062978, y: 2.411594, z: 0.11730303}
+--- !u!114 &5632751153710126509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724291013968947414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
+  m_SerializedVersion: 0
+  m_Size: {x: 7.885887, y: 5.3685403, z: 7.182727}
+  m_Center: {x: 0.3885889, y: 2.1842701, z: 0.07401657}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
