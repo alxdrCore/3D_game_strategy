@@ -6,6 +6,7 @@ public class GameInput : MonoBehaviour
 {
     public static GameInput Instance {get; private set;}
     public event EventHandler OnMouseRightStarted;
+    public event EventHandler OnMouseLeftStarted;
     private InputActions _inputActions;
     private void Awake()
     {
@@ -30,9 +31,14 @@ public class GameInput : MonoBehaviour
         Vector3 mousePosition = Mouse.current.position.ReadValue();
         return mousePosition;
     }
+    public bool GetShiftIsPressed()
+    {
+        bool shiftIsPressed = _inputActions.Gameplay.LeftShift.IsPressed();
+        return shiftIsPressed;
+    }
     private void MouseLeft_started(InputAction.CallbackContext obj)
     {
-        
+        OnMouseLeftStarted?.Invoke(this, EventArgs.Empty);   
     }
     private void MouseLeft_canceled(InputAction.CallbackContext obj)
     {

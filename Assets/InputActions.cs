@@ -118,6 +118,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LeftShift"",
+                    ""type"": ""Button"",
+                    ""id"": ""de288f99-ddd9-4657-a923-da41e9bb1791"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -164,6 +173,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MouseLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6a7fc2b-d812-4251-8d28-f751ead1902f"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftShift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +207,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_MouseRight = m_Gameplay.FindAction("MouseRight", throwIfNotFound: true);
         m_Gameplay_MouseLeft = m_Gameplay.FindAction("MouseLeft", throwIfNotFound: true);
         m_Gameplay_Rotate = m_Gameplay.FindAction("Rotate", throwIfNotFound: true);
+        m_Gameplay_LeftShift = m_Gameplay.FindAction("LeftShift", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -270,6 +291,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_MouseRight;
     private readonly InputAction m_Gameplay_MouseLeft;
     private readonly InputAction m_Gameplay_Rotate;
+    private readonly InputAction m_Gameplay_LeftShift;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -293,6 +315,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Rotate".
         /// </summary>
         public InputAction @Rotate => m_Wrapper.m_Gameplay_Rotate;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/LeftShift".
+        /// </summary>
+        public InputAction @LeftShift => m_Wrapper.m_Gameplay_LeftShift;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -328,6 +354,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
+            @LeftShift.started += instance.OnLeftShift;
+            @LeftShift.performed += instance.OnLeftShift;
+            @LeftShift.canceled += instance.OnLeftShift;
         }
 
         /// <summary>
@@ -348,6 +377,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
+            @LeftShift.started -= instance.OnLeftShift;
+            @LeftShift.performed -= instance.OnLeftShift;
+            @LeftShift.canceled -= instance.OnLeftShift;
         }
 
         /// <summary>
@@ -422,5 +454,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LeftShift" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftShift(InputAction.CallbackContext context);
     }
 }
