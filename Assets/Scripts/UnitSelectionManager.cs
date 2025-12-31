@@ -70,6 +70,12 @@ public class UnitSelectionManager : MonoBehaviour
         _selectionIsActive = false;
     }
 
+    private void SelectByClicking(GameObject unit)
+    {
+        DeselectAll();
+        unitsSelected.Add(unit);
+        SetSelectionIndicator(unit, true);
+    }
     private void MultipleSelection(GameObject unit)
     {
         if(unitsSelected.Contains(unit))
@@ -83,24 +89,26 @@ public class UnitSelectionManager : MonoBehaviour
             unitsSelected.Add(unit);
         }
     }
-
-    private void SelectByClicking(GameObject unit)
+    public void DragSelect(GameObject unit)
     {
-        DeselectAll();
-        unitsSelected.Add(unit);
-        SetSelectionIndicator(unit, true);
+        if(unitsSelected.Contains(unit) == false)
+        {
+            unitsSelected.Add(unit);
+            SetSelectionIndicator(unit, true);
+        }
     }
-    private void DeselectAll()
+
+    private void SetSelectionIndicator(GameObject unit, bool isActive)
+    {
+        unit.transform.GetChild(0).gameObject.SetActive(isActive);
+    }
+    public void DeselectAll()
     {
         foreach(var unit in unitsSelected)
         {
             SetSelectionIndicator(unit, false);
         }
         unitsSelected.Clear();
-    }
-    private void SetSelectionIndicator(GameObject unit, bool isActive)
-    {
-        unit.transform.GetChild(0).gameObject.SetActive(isActive);
     }
     private void OnValidate()
     {

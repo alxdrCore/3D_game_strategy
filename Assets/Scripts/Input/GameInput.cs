@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance {get; private set;}
-    public event EventHandler OnMouseRightStarted;
     public event EventHandler OnMouseLeftStarted;
+    public event EventHandler OnMouseLeftCanceled;
+    public event EventHandler OnMouseRightStarted;
     private InputActions _inputActions;
     private void Awake()
     {
@@ -40,8 +41,14 @@ public class GameInput : MonoBehaviour
     {
         OnMouseLeftStarted?.Invoke(this, EventArgs.Empty);   
     }
+    public bool MouseLeft_IsPressed()
+    {
+        bool mouseLeftIsPressed = _inputActions.Gameplay.MouseLeft.IsPressed();
+        return mouseLeftIsPressed;
+    }
     private void MouseLeft_canceled(InputAction.CallbackContext obj)
     {
+        OnMouseLeftCanceled?.Invoke(this, EventArgs.Empty);
     }
     private void MouseRightClick_started(InputAction.CallbackContext obj)
     {
