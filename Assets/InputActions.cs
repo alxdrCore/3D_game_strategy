@@ -127,6 +127,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""f9dc2b9b-48e2-4f0a-b681-b8f88ed68637"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMiddle"",
+                    ""type"": ""Button"",
+                    ""id"": ""20e33a20-196c-4dd2-906b-e0a5441cf6b9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -184,6 +202,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""LeftShift"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f125dcab-3510-4fb6-a298-8317ff9372f3"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9edc1f06-7a92-413e-8f1b-1ab0ba83122a"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMiddle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +248,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_MouseLeft = m_Gameplay.FindAction("MouseLeft", throwIfNotFound: true);
         m_Gameplay_Rotate = m_Gameplay.FindAction("Rotate", throwIfNotFound: true);
         m_Gameplay_LeftShift = m_Gameplay.FindAction("LeftShift", throwIfNotFound: true);
+        m_Gameplay_Escape = m_Gameplay.FindAction("Escape", throwIfNotFound: true);
+        m_Gameplay_MouseMiddle = m_Gameplay.FindAction("MouseMiddle", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -292,6 +334,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_MouseLeft;
     private readonly InputAction m_Gameplay_Rotate;
     private readonly InputAction m_Gameplay_LeftShift;
+    private readonly InputAction m_Gameplay_Escape;
+    private readonly InputAction m_Gameplay_MouseMiddle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -319,6 +363,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/LeftShift".
         /// </summary>
         public InputAction @LeftShift => m_Wrapper.m_Gameplay_LeftShift;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Escape".
+        /// </summary>
+        public InputAction @Escape => m_Wrapper.m_Gameplay_Escape;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/MouseMiddle".
+        /// </summary>
+        public InputAction @MouseMiddle => m_Wrapper.m_Gameplay_MouseMiddle;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -357,6 +409,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftShift.started += instance.OnLeftShift;
             @LeftShift.performed += instance.OnLeftShift;
             @LeftShift.canceled += instance.OnLeftShift;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
+            @MouseMiddle.started += instance.OnMouseMiddle;
+            @MouseMiddle.performed += instance.OnMouseMiddle;
+            @MouseMiddle.canceled += instance.OnMouseMiddle;
         }
 
         /// <summary>
@@ -380,6 +438,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LeftShift.started -= instance.OnLeftShift;
             @LeftShift.performed -= instance.OnLeftShift;
             @LeftShift.canceled -= instance.OnLeftShift;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
+            @MouseMiddle.started -= instance.OnMouseMiddle;
+            @MouseMiddle.performed -= instance.OnMouseMiddle;
+            @MouseMiddle.canceled -= instance.OnMouseMiddle;
         }
 
         /// <summary>
@@ -461,5 +525,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLeftShift(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscape(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MouseMiddle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMouseMiddle(InputAction.CallbackContext context);
     }
 }

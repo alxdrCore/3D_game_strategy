@@ -16,9 +16,9 @@ public class UnitSelectionManager : MonoBehaviour
     public List<GameObject> unitsSelected = new List<GameObject>();
 
 
+    private GameObject _unitHovered;
     private bool _selectionIsActive;
     private RaycastHit _hit;
-
 
 
     private void Awake()
@@ -37,34 +37,57 @@ public class UnitSelectionManager : MonoBehaviour
     }
     private void Update()
     {
-        HandleUnitSelection(_selectionIsActive);
+        Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
+        HandleUnitHovering(ray);
+        HandleUnitSelection(ray, _selectionIsActive);
     }
     private void OnLeftClickStarted(object sender, EventArgs e)
     {
         _selectionIsActive = true;
     }
-    private void HandleUnitSelection(bool selectionIsActive)
+    private void HandleUnitHovering(Ray ray)
+    {
+        if(Physics.Raycast(ray, out _hit, Mathf.Infinity, _clickable))
+        {
+            if(_hit.collider.gameObject == _unitHovered)
+                return;
+            if(_unitHovered != null)
+            {
+                SetHoveringIndicator(_unitHovered, false);
+                _unitHovered = null;
+            }
+            _unitHovered = _hit.collider.gameObject;
+            SetHoveringIndicator(_unitHovered, true);
+        }
+        else
+        {
+            if(_unitHovered != null)
+            {
+                SetHoveringIndicator(_unitHovered, false);
+                _unitHovered = null;
+            }
+        }
+    }
+    private void HandleUnitSelection(Ray ray, bool selectionIsActive)
     {
         if(!selectionIsActive)
             return;
 
-        Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
-
         if(!Physics.Raycast(ray, out _hit, Mathf.Infinity, _clickable))
         {
-            if(!GameInput.Instance.GetShiftIsPressed())
+            if(!GameInput.Instance.LeftShift_IsPressed())
                 DeselectAll();
             _selectionIsActive = false;
             return;
         }
         
-        if(!GameInput.Instance.GetShiftIsPressed())
+        if(GameInput.Instance.LeftShift_IsPressed())
         {
-            SelectByClicking(_hit.collider.gameObject);
+            MultipleSelection(_hit.collider.gameObject);
         }
         else
         {
-            MultipleSelection(_hit.collider.gameObject);
+            SelectByClicking(_hit.collider.gameObject);
         }
 
         _selectionIsActive = false;
@@ -98,9 +121,13 @@ public class UnitSelectionManager : MonoBehaviour
         }
     }
 
-    private void SetSelectionIndicator(GameObject unit, bool isActive)
+    private void SetSelectionIndicator(GameObject unit, bool isSelected)
     {
-        unit.transform.GetChild(0).gameObject.SetActive(isActive);
+        unit.GetComponent<UnitVisual>().SetSelected(isSelected);
+    }
+    private void SetHoveringIndicator(GameObject unit, bool isHovered)
+    {
+        unit.GetComponent<UnitVisual>().SetHovered(isHovered);
     }
     public void DeselectAll()
     {

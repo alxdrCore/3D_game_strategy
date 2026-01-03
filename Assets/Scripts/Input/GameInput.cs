@@ -8,16 +8,25 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnMouseLeftStarted;
     public event EventHandler OnMouseLeftCanceled;
     public event EventHandler OnMouseRightStarted;
+    public event EventHandler OnEscapeStarted;
+    public event EventHandler OnMouseMiddleStarted;
     private InputActions _inputActions;
     private void Awake()
     {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
         _inputActions = new InputActions();
         _inputActions.Enable();
         _inputActions.Gameplay.MouseLeft.started += MouseLeft_started;
         _inputActions.Gameplay.MouseLeft.canceled += MouseLeft_canceled;
-        _inputActions.Gameplay.MouseRight.started += MouseRightClick_started;
-        _inputActions.Gameplay.MouseRight.canceled += RightClick_canceled;
+        _inputActions.Gameplay.MouseRight.started += MouseRight_started;
+        _inputActions.Gameplay.MouseRight.canceled += MouseRight_canceled;
+        _inputActions.Gameplay.MouseMiddle.started += MouseMiddle_started;
+        _inputActions.Gameplay.Escape.started += Escape_started;
     }
      
     public float GetBuildingRotationDirection()
@@ -32,7 +41,7 @@ public class GameInput : MonoBehaviour
         Vector3 mousePosition = Mouse.current.position.ReadValue();
         return mousePosition;
     }
-    public bool GetShiftIsPressed()
+    public bool LeftShift_IsPressed()
     {
         bool shiftIsPressed = _inputActions.Gameplay.LeftShift.IsPressed();
         return shiftIsPressed;
@@ -50,11 +59,20 @@ public class GameInput : MonoBehaviour
     {
         OnMouseLeftCanceled?.Invoke(this, EventArgs.Empty);
     }
-    private void MouseRightClick_started(InputAction.CallbackContext obj)
+    private void MouseRight_started(InputAction.CallbackContext obj)
     {
         OnMouseRightStarted?.Invoke(this, EventArgs.Empty);
     }
-    private void RightClick_canceled(InputAction.CallbackContext obj)
+    private void MouseRight_canceled(InputAction.CallbackContext obj)
     {
+    }
+    private void MouseMiddle_started(InputAction.CallbackContext obj)
+    {
+        OnMouseMiddleStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Escape_started(InputAction.CallbackContext obj)
+    {
+        OnEscapeStarted?.Invoke(this, EventArgs.Empty);
     }
 }

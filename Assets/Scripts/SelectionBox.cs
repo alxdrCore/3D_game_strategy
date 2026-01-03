@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
  
-public class UnitSelectionBox : MonoBehaviour
+public class SelectionBox : MonoBehaviour
 {
     private Camera _cam;
 
@@ -28,17 +28,11 @@ public class UnitSelectionBox : MonoBehaviour
  
     private void Update()
     {
-        // When Clicked
         HandleSelectionStarted(_mouseLeftIsStarted);
  
-        // When Dragging
         HandleSelection(GameInput.Instance.MouseLeft_IsPressed());
  
-        // When Releasing
         HandleSelectionIsCanceled(_mouseLeftIsCanceled);
-
-        _mouseLeftIsStarted = false;
-        _mouseLeftIsCanceled = false;
     }
  
     private void SelectionBox_OnMouseLeftStarted(object sender, EventArgs e)
@@ -49,54 +43,53 @@ public class UnitSelectionBox : MonoBehaviour
     {
         _mouseLeftIsCanceled = true;
     }
-    private void HandleSelectionStarted(bool selectionIsStarted)
+    private void HandleSelectionStarted(bool mouseLeftIsStarted)
     {
-        if(!selectionIsStarted)
+        if(!mouseLeftIsStarted)
             return;
         
         startPosition = GameInput.Instance.GetMousePosition();
         _selectionBox = new Rect();
+        _mouseLeftIsStarted = false;
     }
-    private void HandleSelection(bool mouseLeftButtonIsPressed)
+    private void HandleSelection(bool mouseLeftIsPressed)
     {
-        if(!mouseLeftButtonIsPressed)
+        if(!mouseLeftIsPressed)
             return;
-        
+
+        if(_boxVisual.rect.width > 15 || _boxVisual.rect.height > 15)
+        {
+            if(!GameInput.Instance.LeftShift_IsPressed())
+                UnitSelectionManager.Instance.DeselectAll();
+            SelectUnits();
+        }
         endPosition = Input.mousePosition;
         DrawVisual();
         DrawSelection();
 
     }
-    private void HandleSelectionIsCanceled(bool mouseLeftButtonIsCanceled)
+    private void HandleSelectionIsCanceled(bool mouseLeftIsCanceled)
     {
-        if(!mouseLeftButtonIsCanceled)
+        if(!mouseLeftIsCanceled)
             return;
-
-        if(_boxVisual.rect.width > 0.01 || _boxVisual.rect.height > 0.01)
-        {
-            SelectUnits();
-        }
  
         startPosition = Vector2.zero;
         endPosition = Vector2.zero;
         DrawVisual();
+        DrawSelection();
+        _mouseLeftIsCanceled = false;
     }
     void DrawVisual()
     {
-        // Calculate the starting and ending positions of the selection box.
         Vector2 boxStart = startPosition;
         Vector2 boxEnd = endPosition;
  
-        // Calculate the center of the selection box.
         Vector2 boxCenter = (boxStart + boxEnd) / 2;
  
-        // Set the position of the visual selection box based on its center.
         _boxVisual.position = boxCenter;
  
-        // Calculate the size of the selection box in both width and height.
         Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y));
  
-        // Set the size of the visual selection box based on its calculated size.
         _boxVisual.sizeDelta = boxSize;
     }
  
@@ -128,8 +121,6 @@ public class UnitSelectionBox : MonoBehaviour
  
     void SelectUnits()
     {
-        UnitSelectionManager.Instance.DeselectAll();
-
         foreach (var unit in UnitSelectionManager.Instance.unitsAll)
         {
             if (_selectionBox.Contains(_cam.WorldToScreenPoint(unit.transform.position)))
