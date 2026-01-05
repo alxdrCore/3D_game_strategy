@@ -8,8 +8,6 @@ public class SelectionBox : MonoBehaviour
 {
     private Camera _cam;
 
-    private bool _mouseLeftIsStarted;
-    private bool _mouseLeftIsCanceled;
     [SerializeField] private RectTransform _boxVisual;
  
     private Rect _selectionBox;
@@ -28,35 +26,17 @@ public class SelectionBox : MonoBehaviour
  
     private void Update()
     {
-        HandleSelectionStarted(_mouseLeftIsStarted);
- 
-        HandleSelection(GameInput.Instance.MouseLeft_IsPressed());
- 
-        HandleSelectionIsCanceled(_mouseLeftIsCanceled);
+        if(GameInput.Instance.MouseLeft_IsPressed())
+            HandleSelection();
     }
  
     private void SelectionBox_OnMouseLeftStarted(object sender, EventArgs e)
     {
-        _mouseLeftIsStarted = true;
-    }
-    private void SelectionBox_OnMouseLeftCanceled(object sender, EventArgs e)
-    {
-        _mouseLeftIsCanceled = true;
-    }
-    private void HandleSelectionStarted(bool mouseLeftIsStarted)
-    {
-        if(!mouseLeftIsStarted)
-            return;
-        
         startPosition = GameInput.Instance.GetMousePosition();
         _selectionBox = new Rect();
-        _mouseLeftIsStarted = false;
     }
-    private void HandleSelection(bool mouseLeftIsPressed)
+    private void HandleSelection()
     {
-        if(!mouseLeftIsPressed)
-            return;
-
         if(_boxVisual.rect.width > 15 || _boxVisual.rect.height > 15)
         {
             if(!GameInput.Instance.LeftShift_IsPressed())
@@ -66,19 +46,15 @@ public class SelectionBox : MonoBehaviour
         endPosition = Input.mousePosition;
         DrawVisual();
         DrawSelection();
-
     }
-    private void HandleSelectionIsCanceled(bool mouseLeftIsCanceled)
+    private void SelectionBox_OnMouseLeftCanceled(object sender, EventArgs e)
     {
-        if(!mouseLeftIsCanceled)
-            return;
- 
         startPosition = Vector2.zero;
         endPosition = Vector2.zero;
         DrawVisual();
         DrawSelection();
-        _mouseLeftIsCanceled = false;
     }
+    
     void DrawVisual()
     {
         Vector2 boxStart = startPosition;

@@ -26,34 +26,24 @@ public class UnitMovementManager : MonoBehaviour
 
     private void Update()
     {
-        CheckIfGround(_checkIsActive);
     }
+    
+    
     private void UnitMovementManager_OnMouseRightStarted(object sender, EventArgs e)
     {
-        _checkIsActive = true;
-    }
-    private void CheckIfGround(bool checkIsActivated)
-    {
-        if(!checkIsActivated)
-            return;
-
         RaycastHit hit;
         Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
-
         if(!Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
         {
-            _checkIsActive = false;
             return;
         }
-
         if(UnitSelectionManager.Instance.unitsSelected.Count > 0)
         {
             SetDestinationMarker(hit);
             SendUnitsToDestination(UnitSelectionManager.Instance.unitsSelected, hit);
         }
-
-        _checkIsActive = false;
     }
+    
     private void SetDestinationMarker(RaycastHit destinationHit)
     {
         _groundDestinationMarker.transform.position = destinationHit.point;

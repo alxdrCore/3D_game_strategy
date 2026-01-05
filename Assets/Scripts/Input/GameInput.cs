@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
@@ -10,6 +11,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnMouseRightStarted;
     public event EventHandler OnEscapeStarted;
     public event EventHandler OnMouseMiddleStarted;
+    
     private InputActions _inputActions;
     private void Awake()
     {
@@ -69,6 +71,21 @@ public class GameInput : MonoBehaviour
     private void MouseMiddle_started(InputAction.CallbackContext obj)
     {
         OnMouseMiddleStarted?.Invoke(this, EventArgs.Empty);
+    }
+    public bool MouseMiddle_IsPressed()
+    {
+        bool mouseMiddleIsPressed = _inputActions.Gameplay.MouseMiddle.IsPressed();
+        return mouseMiddleIsPressed;
+    }
+    public bool LeftControl_IsPressed()
+    {
+        bool leftControlIsPressed = _inputActions.Gameplay.LeftControl.IsPressed();
+        return leftControlIsPressed;
+    }
+    public Vector2 GetMoveDirection()
+    {
+        Vector2 moveDirection = _inputActions.Gameplay.Move.ReadValue<Vector2>();
+        return moveDirection;
     }
 
     private void Escape_started(InputAction.CallbackContext obj)
