@@ -1,57 +1,10 @@
-// using UnityEngine;
-// public class CameraController : MonoBehaviour
-// {
-//     public static CameraController Instance {get; private set;}
-//     [SerializeField] private float _rotateSpeed = 60f;
-//     [SerializeField] private float _moveSpeed = 60f;
-//     [SerializeField] private float _flySpeed = 50f;
-//     [SerializeField] private float _minFlyHeight = 20f;
-//     [SerializeField] private float _maxFlyHeight = 50f;
-//     private float _moveBaseMultiplier = 1f;
-//     private float _moveAcceleration = 2f;
-
-//     private void Start()
-//     {
-
-//     }
-//     private void Awake()
-//     {
-//         Instance = this;
-//     }
-//     private void Update()
-//     {
-//         HandleMovementAndRotation();
-
-//     } 
-//     private void FixedUpdate()
-//     {
-//     } 
-//     private void HandleMovementAndRotation()
-//     {
-//         transform.Rotate(Vector3.up, GameInput.Instance.GetCameraRotationDirection() * _rotateSpeed * GetAccelerationIfActive() * Time.deltaTime );
-//         transform.Translate(GameInput.Instance.GetMoveDirection() * _moveSpeed * GetAccelerationIfActive()* Time.deltaTime );
-//         transform.position += transform.up * GameInput.Instance.GetFlyDirection() * _flySpeed * GetAccelerationIfActive() * Time.deltaTime;
-
-//         Vector3 posBordering = transform.position;
-//         posBordering.y = Mathf.Clamp(posBordering.y, _minFlyHeight, _maxFlyHeight);
-//         transform.position = posBordering;
-//     }
-//     private float GetAccelerationIfActive()
-//     {
-//         if(GameInput.Instance.GetIsAccelerationActive())
-//             return _moveAcceleration;
-//         return _moveBaseMultiplier;
-//     }
-// }
-
-
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class RTSCameraController : MonoBehaviour
 {
-    public static RTSCameraController Instance {get; private set;}
+    public static RTSCameraController Instance { get; private set; }
 
     // If we want to select an item to follow, inside the item script add:
     // public void OnMouseDown(){
@@ -97,7 +50,7 @@ public class RTSCameraController : MonoBehaviour
 
     private void Start()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -108,8 +61,7 @@ public class RTSCameraController : MonoBehaviour
 
         _currentMovementSpeed = _normalSpeed;
 
-        GameInput.Instance.OnMouseMiddleStarted += OnMouseMiddleStarted_HandleMouseDragInput; 
-
+        GameInput.Instance.OnMouseMiddleStarted += OnMouseMiddleStarted_HandleMouseDragInput;
     }
 
     private void Update()
@@ -124,90 +76,70 @@ public class RTSCameraController : MonoBehaviour
         {
             HandleCameraMovement();
         }
-
-        if (_escapeButtonStarted)
-        {
-            _followTransform = null;
-            _escapeButtonStarted = false;
-        }
     }
 
     private void HandleCameraMovement()
     {
-        if(_moveWithMouseDrag)
+        if (_moveWithMouseDrag)
             OnMouseMiddleIsPressed_HandleMouseDragInput();
 
         // Keyboard Control
         if (_moveWithKeyboard)
-        {
-            Vector2 moveInput = GameInput.Instance.GetMoveDirection();
-            Vector3 moveDirection3D = transform.right * moveInput.x + transform.forward * moveInput.y;
-            moveDirection3D.y = 0f;  
-            if (GameInput.Instance.LeftControl_IsPressed())
-            {
-                _currentMovementSpeed = _fastSpeed;
-            }
-            else
-            {
-                _currentMovementSpeed = _normalSpeed;
-            }
-
-            transform.position += moveDirection3D.normalized * _currentMovementSpeed * Time.deltaTime;
-        }
+            KeyboardMovement();
 
         // Edge Scrolling
         if (_moveWithEdgeScrolling)
-        {
-            Vector3 mousePosition = GameInput.Instance.GetMousePosition();
-            // Move Right
-            if (mousePosition.x > Screen.width - _edgeSize)
-            {
-                newPosition += (transform.right * _currentMovementSpeed);
-                ChangeCursor(CursorArrow.RIGHT);
-                _isCursorSet = true;
-            }
+            EdgeScrollingMovement();
 
-            // Move Left
-            else if (mousePosition.x < _edgeSize)
-            {
-                newPosition += (transform.right * -_currentMovementSpeed);
-                ChangeCursor(CursorArrow.LEFT);
-                _isCursorSet = true;
-            }
-
-            // Move Up
-            else if (mousePosition.z > Screen.height - _edgeSize)
-            {
-                newPosition += (transform.forward * _currentMovementSpeed);
-                ChangeCursor(CursorArrow.UP);
-                _isCursorSet = true;
-            }
-
-            // Move Down
-            else if (mousePosition.z < _edgeSize)
-            {
-                newPosition += (transform.forward * -_currentMovementSpeed);
-                ChangeCursor(CursorArrow.DOWN);
-                _isCursorSet = true;
-            }
-            else
-            {
-                if (_isCursorSet)
-                {
-                    ChangeCursor(CursorArrow.DEFAULT);
-                    _isCursorSet = false;
-                }
-            }
-        }
-
-
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * _movementSensitivity);
         Cursor.lockState = CursorLockMode.Confined; // If we have an extra monitor we don't want to exit screen bounds
     }
     private void CameraController_OnEscapeStarted()
     {
-        _escapeButtonStarted = true;
+        _followTransform = null;
     }
 
+    private void EdgeScrollingMovement()
+    {
+        Vector2 mousePosition = GameInput.Instance.GetMousePosition();
+        Vector3 edgeMoveDirection = Vector3.zero;
+
+        if (mousePosition.x > Screen.width - _edgeSize)
+        {
+            edgeMoveDirection += transform.right;
+            ChangeCursor(CursorArrow.RIGHT);
+            _isCursorSet = true;
+        }
+        else if (mousePosition.x < _edgeSize)
+        {
+            edgeMoveDirection += -transform.right;
+            ChangeCursor(CursorArrow.LEFT);
+            _isCursorSet = true;
+        }
+
+        if (mousePosition.y > Screen.height - _edgeSize)
+        {
+            edgeMoveDirection += transform.forward;
+            ChangeCursor(CursorArrow.UP);
+            _isCursorSet = true;
+        }
+        else if (mousePosition.y < _edgeSize)
+        {
+            edgeMoveDirection += -transform.forward;
+            ChangeCursor(CursorArrow.DOWN);
+            _isCursorSet = true;
+        }
+
+        if (edgeMoveDirection != Vector3.zero)
+        {
+            newPosition = transform.position + edgeMoveDirection.normalized * _currentMovementSpeed;
+        }
+        else if (_isCursorSet)
+        {
+            ChangeCursor(CursorArrow.DEFAULT);
+            _isCursorSet = false;
+        }
+    }
     private void ChangeCursor(CursorArrow newCursor)
     {
         // Only change cursor if its not the same cursor
@@ -235,11 +167,29 @@ public class RTSCameraController : MonoBehaviour
             currentCursor = newCursor;
         }
     }
+    private void KeyboardMovement()
+    {
+        Vector2 moveInput = GameInput.Instance.GetMoveDirection();
+        Debug.Log("Move input : " + moveInput);
+        if (moveInput == Vector2.zero)
+            return;
+        Vector3 moveDirection3D = transform.right * moveInput.x + transform.forward * moveInput.y;
+        moveDirection3D.y = 0f;
+        if (GameInput.Instance.LeftControl_IsPressed())
+        {
+            _currentMovementSpeed = _fastSpeed;
+        }
+        else
+        {
+            _currentMovementSpeed = _normalSpeed;
+        }
 
+        newPosition = transform.position + moveDirection3D.normalized * _currentMovementSpeed;
+    }
 
     private void OnMouseMiddleStarted_HandleMouseDragInput(object sender, EventArgs e)
     {
-        if(!_moveWithMouseDrag)
+        if (!_moveWithMouseDrag)
             return;
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         Ray ray = Camera.main.ScreenPointToRay(GameInput.Instance.GetMousePosition());
@@ -255,8 +205,6 @@ public class RTSCameraController : MonoBehaviour
     {
         if (!GameInput.Instance.MouseMiddle_IsPressed())
             return;
-        
-        Debug.Log("CameraController : Entered");
 
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         Ray ray = Camera.main.ScreenPointToRay(GameInput.Instance.GetMousePosition());
@@ -268,6 +216,5 @@ public class RTSCameraController : MonoBehaviour
             dragCurrentPosition = ray.GetPoint(entry);
             newPosition = transform.position + dragStartPosition - dragCurrentPosition;
         }
-
     }
 }

@@ -38,9 +38,9 @@ public class GameInput : MonoBehaviour
         else if (rotationDirection < -0.01) return -1;
         return 0;
     }
-    public Vector3 GetMousePosition()
+    public Vector2 GetMousePosition()
     {
-        Vector3 mousePosition = Mouse.current.position.ReadValue();
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
         return mousePosition;
     }
     public bool LeftShift_IsPressed()

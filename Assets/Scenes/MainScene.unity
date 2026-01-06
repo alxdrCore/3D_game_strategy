@@ -8246,8 +8246,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   _cameraTransform: {fileID: 330585546}
   _moveWithKeyboard: 0
-  _moveWithEdgeScrolling: 0
-  _moveWithMouseDrag: 1
+  _moveWithEdgeScrolling: 1
+  _moveWithMouseDrag: 0
   _fastSpeed: 10
   _normalSpeed: 5
   _movementSensitivity: 1
