@@ -40,7 +40,7 @@ public class SelectionBox : MonoBehaviour
         if(_boxVisual.rect.width > 15 || _boxVisual.rect.height > 15)
         {
             if(!GameInput.Instance.LeftShift_IsPressed())
-                UnitSelectionManager.Instance.DeselectAll();
+                SelectionManager.Instance.DeselectAll();
             SelectUnits();
         }
         endPosition = Input.mousePosition;
@@ -97,11 +97,11 @@ public class SelectionBox : MonoBehaviour
  
     void SelectUnits()
     {
-        foreach (var unit in UnitSelectionManager.Instance.unitsAll)
+        foreach (var unit in SelectionManager.Instance.unitsAll)
         {
             if (_selectionBox.Contains(_cam.WorldToScreenPoint(unit.transform.position)))
             {
-                UnitSelectionManager.Instance.DragSelect(unit);
+                SelectionManager.Instance.DragSelect(unit);
             }
         }
     }

@@ -4,14 +4,14 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class UnitSelectionManager : MonoBehaviour
+public class SelectionManager : MonoBehaviour
 {
-    public static UnitSelectionManager Instance {get; private set;}
-    [SerializeField, HideInInspector] private Camera _cam;
+    public static SelectionManager Instance {get; private set;}
     [SerializeField] private LayerMask _ground;
     [SerializeField] private LayerMask _clickable;
 
 
+    private Camera _cam;
     public List<GameObject> unitsAll = new List<GameObject>();
     public List<GameObject> unitsSelected = new List<GameObject>();
 
@@ -117,11 +117,11 @@ public class UnitSelectionManager : MonoBehaviour
     }
     private void SwitchSelectionIndicator(GameObject unit, bool isSelected)
     {
-        unit.GetComponent<Unit>().SetSelectionIndicator(isSelected);
+        unit.GetComponentInChildren<UnitVisual>().ShowSelected(isSelected);
     }
     private void SwitchHover(GameObject unit, bool isHovering)
     {
-        unit.GetComponent<Unit>().SetHoveringIndicator(isHovering);
+        unit.GetComponentInChildren<UnitVisual>().ShowHover(isHovering);
     }
     public void DeselectAll()
     {

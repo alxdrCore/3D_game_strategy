@@ -89,6 +89,65 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4887675284486520083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1227924189739740083}
+  - component: {fileID: 7582000163427134149}
+  - component: {fileID: 7486649178961946825}
+  m_Layer: 0
+  m_Name: ZondbeLogic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1227924189739740083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887675284486520083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5073619114102567217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7582000163427134149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887675284486520083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec401aa1d881474bbfaa07651bd7eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
+  _agent: {fileID: 7335539222920975321}
+--- !u!114 &7486649178961946825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887675284486520083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bed5caf663206e4abaddb47d2169b3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitLogic
+  _unitMovement: {fileID: 7582000163427134149}
 --- !u!1 &8550009804135182342
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,10 +246,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5073619114102567217}
-  - component: {fileID: 762390672617953652}
-  - component: {fileID: 5132028173064806143}
-  - component: {fileID: 5541256006569164520}
-  - component: {fileID: 1914499907115317253}
+  - component: {fileID: 7335539222920975321}
+  - component: {fileID: 2008320138334689585}
+  - component: {fileID: 7415093632001542980}
   m_Layer: 7
   m_Name: Zondbe
   m_TagString: Untagged
@@ -208,13 +266,36 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 1227924189739740083}
   - {fileID: 3159079562525186790}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &762390672617953652
+--- !u!195 &7335539222920975321
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659508171347948281}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.3
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.46
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!136 &2008320138334689585
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,33 +314,11 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.0356753
-  m_Height: 4.682415
+  m_Radius: 0.28903157
+  m_Height: 1.4092329
   m_Direction: 1
-  m_Center: {x: 0.016963005, y: 2.322568, z: 0.026821136}
---- !u!195 &5132028173064806143
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659508171347948281}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 1.23
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 4.65
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!114 &5541256006569164520
+  m_Center: {x: 0.016963065, y: 0.74440515, z: 0.012691796}
+--- !u!114 &7415093632001542980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,20 +330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec8d6e25fbd08046a6c27d770ec29df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
-  _unitVisual: {fileID: 483334504067386198}
---- !u!114 &1914499907115317253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659508171347948281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec401aa1d881474bbfaa07651bd7eb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
-  _agent: {fileID: 5132028173064806143}
 --- !u!1001 &3196983313386437901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -293,6 +338,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5073619114102567217}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -333,13 +390,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
       propertyPath: m_Name
-      value: VisualZondbe
+      value: ZondbeVisual
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -375,6 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
+  _animator: {fileID: 1280732799930541603}
   _selectIndicator: {fileID: 8550009804135182342}
   _hoverIndicator: {fileID: 3803213710235917902}
 --- !u!95 &1280732799930541603

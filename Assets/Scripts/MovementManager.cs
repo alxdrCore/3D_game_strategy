@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMovementManager : MonoBehaviour
+public class MovementManager : MonoBehaviour
 {
-    public static UnitMovementManager Instance {get; private set;}
+    public static MovementManager Instance {get; private set;}
     [SerializeField, HideInInspector] private Camera _cam;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private GameObject _groundDestinationMarker; 
-    private bool _checkIsActive;
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -37,10 +36,10 @@ public class UnitMovementManager : MonoBehaviour
         {
             return;
         }
-        if(UnitSelectionManager.Instance.unitsSelected.Count > 0)
+        if(SelectionManager.Instance.unitsSelected.Count > 0)
         {
             SetDestinationMarker(hit);
-            SendUnitsToDestination(UnitSelectionManager.Instance.unitsSelected, hit);
+            SendToDestination(SelectionManager.Instance.unitsSelected, hit);
         }
     }
     
@@ -51,11 +50,11 @@ public class UnitMovementManager : MonoBehaviour
         _groundDestinationMarker.SetActive(false);
         _groundDestinationMarker.SetActive(true);
     }
-    private void SendUnitsToDestination(List<GameObject> selectedUnits, RaycastHit destinationHit)
+    private void SendToDestination(List<GameObject> selectedUnits, RaycastHit destinationHit)
     {
         foreach(var unit in selectedUnits)
         {
-            unit.GetComponent<UnitMovement>().UnitSetDestination(destinationHit);
+            unit.GetComponentInChildren<UnitLogic>().SetUnitDestination(destinationHit);
         }
     }
 }

@@ -19,6 +19,5 @@ public class UnitVisual : MonoBehaviour
         {
             _animator = GetComponent<Animator>();
         }
-
     }
 }
