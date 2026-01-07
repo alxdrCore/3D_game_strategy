@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5630882174053904617}
   - component: {fileID: 6579186837509553489}
   - component: {fileID: 3699169982749928951}
-  - component: {fileID: 9040072381669087264}
   m_Layer: 7
   m_Name: Car
   m_TagString: Untagged
@@ -34,8 +33,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5615315295330647897}
-  - {fileID: 9063874398693279752}
   - {fileID: 1818644048174054697}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -94,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec8d6e25fbd08046a6c27d770ec29df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
+  _unitVisual: {fileID: 1050736268339596492}
 --- !u!114 &3699169982749928951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,18 +105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
   _agent: {fileID: 5630882174053904617}
---- !u!114 &9040072381669087264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4955061499702125970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
 --- !u!1 &6472014222594955022
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,11 +132,11 @@ Transform:
   m_GameObject: {fileID: 6472014222594955022}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00000019914, y: -0.268, z: 0.00000039829}
+  m_LocalPosition: {x: 0, y: -0.268, z: 0}
   m_LocalScale: {x: 3.8033803, y: 0.52722937, z: 3.8589227}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4551252160473096044}
+  m_Father: {fileID: 1818644048174054697}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7956371152728963980
 MeshFilter:
@@ -235,11 +221,11 @@ Transform:
   m_GameObject: {fileID: 7837987493618634883}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00000022206, y: 0, z: 0.00000022206}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3.38044, y: 0.16902201, z: 3.38044}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4551252160473096044}
+  m_Father: {fileID: 1818644048174054697}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6168524838259474768
 MeshFilter:
@@ -355,9 +341,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ef3c75eeac3bc249bca77dc5b56e303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5615315295330647897}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ef3c75eeac3bc249bca77dc5b56e303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9063874398693279752}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ef3c75eeac3bc249bca77dc5b56e303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1050736268339596492}
   m_SourcePrefab: {fileID: 100100000, guid: 9ef3c75eeac3bc249bca77dc5b56e303, type: 3}
+--- !u!1 &1330478943542355859 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ef3c75eeac3bc249bca77dc5b56e303, type: 3}
+  m_PrefabInstance: {fileID: 2213420661026036418}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1050736268339596492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330478943542355859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
+  _selectIndicator: {fileID: 7837987493618634883}
+  _hoverIndicator: {fileID: 6472014222594955022}
 --- !u!4 &1818644048174054697 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ef3c75eeac3bc249bca77dc5b56e303, type: 3}

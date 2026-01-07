@@ -27,11 +27,11 @@ Transform:
   m_GameObject: {fileID: 3803213710235917902}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000000025204, y: -0.331, z: 0.000000079025}
-  m_LocalScale: {x: 2.4754643, y: 0.34316054, z: 2.5116048}
+  m_LocalPosition: {x: 0, y: -0.5032856, z: 0}
+  m_LocalScale: {x: 3.7639434, y: 0.5217756, z: 3.8188949}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5073619114102567217}
+  m_Father: {fileID: 3159079562525186790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7917946609345028641
 MeshFilter:
@@ -115,12 +115,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8550009804135182342}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 0.1, z: 2}
+  m_LocalScale: {x: 3.0410001, y: 0.15205, z: 3.0410001}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5073619114102567217}
+  m_Father: {fileID: 3159079562525186790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6625751247003249503
 MeshFilter:
@@ -191,7 +191,6 @@ GameObject:
   - component: {fileID: 5132028173064806143}
   - component: {fileID: 5541256006569164520}
   - component: {fileID: 1914499907115317253}
-  - component: {fileID: 8910575449444053360}
   m_Layer: 7
   m_Name: Zondbe
   m_TagString: Untagged
@@ -212,8 +211,6 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2896358823226470497}
-  - {fileID: 672680496152004144}
   - {fileID: 3159079562525186790}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -274,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec8d6e25fbd08046a6c27d770ec29df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
+  _unitVisual: {fileID: 483334504067386198}
 --- !u!114 &1914499907115317253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,18 +285,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
   _agent: {fileID: 5132028173064806143}
---- !u!114 &8910575449444053360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659508171347948281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
 --- !u!1001 &3196983313386437901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -357,9 +343,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2896358823226470497}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 672680496152004144}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 483334504067386198}
   m_SourcePrefab: {fileID: 100100000, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+--- !u!1 &2349927599350923356 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
+  m_PrefabInstance: {fileID: 3196983313386437901}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &483334504067386198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349927599350923356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
+  _selectIndicator: {fileID: 8550009804135182342}
+  _hoverIndicator: {fileID: 3803213710235917902}
 --- !u!4 &3159079562525186790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}

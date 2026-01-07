@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class UnitVisual : MonoBehaviour
 {
-    public void SetSelected(bool isSelected)
+    [SerializeField] private GameObject _selectIndicator;
+    [SerializeField] private GameObject _hoverIndicator;
+    public void ShowSelected(bool isSelected)
     {
-        gameObject.transform.GetChild(0).gameObject.SetActive(isSelected);
+        _selectIndicator.SetActive(isSelected);
     }
-    public void SetHovered(bool isHovered)
+    public void ShowHover(bool isHovering)
     {
-        gameObject.transform.GetChild(1).gameObject.SetActive(isHovered);
+        _hoverIndicator.SetActive(isHovering);
     }
 }

@@ -48,17 +48,17 @@ public class UnitSelectionManager : MonoBehaviour
                 return;
             if(_unitHovered != null)
             {
-                SetHoveringIndicator(_unitHovered, false);
+                SwitchHover(_unitHovered, false);
                 _unitHovered = null;
             }
             _unitHovered = _hit.collider.gameObject;
-            SetHoveringIndicator(_unitHovered, true);
+            SwitchHover(_unitHovered, true);
         }
         else
         {
             if(_unitHovered != null)
             {
-                SetHoveringIndicator(_unitHovered, false);
+                SwitchHover(_unitHovered, false);
                 _unitHovered = null;
             }
         }
@@ -85,44 +85,49 @@ public class UnitSelectionManager : MonoBehaviour
     private void SelectByClicking(GameObject unit)
     {
         DeselectAll();
-        unitsSelected.Add(unit);
-        SetSelectionIndicator(unit, true);
+        AddUnitToSelected(unit);
     }
     private void MultipleSelection(GameObject unit)
     {
         if(unitsSelected.Contains(unit))
         {
-            SetSelectionIndicator(unit, false);
-            unitsSelected.Remove(unit);
+            RemoveUnitFromSelected(unit);
         }
         else
         {
-            SetSelectionIndicator(unit, true);
-            unitsSelected.Add(unit);
+            AddUnitToSelected(unit);
         }
     }
     public void DragSelect(GameObject unit)
     {
         if(unitsSelected.Contains(unit) == false)
         {
-            unitsSelected.Add(unit);
-            SetSelectionIndicator(unit, true);
+            AddUnitToSelected(unit);
         }
     }
-
-    private void SetSelectionIndicator(GameObject unit, bool isSelected)
+    private void AddUnitToSelected(GameObject unit)
     {
-        unit.GetComponent<UnitVisual>().SetSelected(isSelected);
+        unitsSelected.Add(unit);
+        SwitchSelectionIndicator(unit, true);
     }
-    private void SetHoveringIndicator(GameObject unit, bool isHovered)
+    private void RemoveUnitFromSelected(GameObject unit)
     {
-        unit.GetComponent<UnitVisual>().SetHovered(isHovered);
+        SwitchSelectionIndicator(unit, false);
+        unitsSelected.Remove(unit);
+    }
+    private void SwitchSelectionIndicator(GameObject unit, bool isSelected)
+    {
+        unit.GetComponent<Unit>().SetSelectionIndicator(isSelected);
+    }
+    private void SwitchHover(GameObject unit, bool isHovering)
+    {
+        unit.GetComponent<Unit>().SetHoveringIndicator(isHovering);
     }
     public void DeselectAll()
     {
         foreach(var unit in unitsSelected)
         {
-            SetSelectionIndicator(unit, false);
+            SwitchSelectionIndicator(unit, false);
         }
         unitsSelected.Clear();
     }

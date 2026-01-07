@@ -13,7 +13,7 @@ public class RTSCameraController : MonoBehaviour
 
     [Header("General")]
     [SerializeField] private Transform _cameraTransform;
-    private Transform _followTransform;
+    [SerializeField] private Transform _followTransform;
     Vector3 newPosition;
     Vector3 dragStartPosition;
     Vector3 dragCurrentPosition;
@@ -30,7 +30,7 @@ public class RTSCameraController : MonoBehaviour
     private float _currentMovementSpeed;
 
     [Header("Edge Scrolling Movement")]
-    [SerializeField] private float _edgeSize = 50f;
+    [SerializeField] private float _edgeSize = 40f;
     private bool _isCursorSet;
     [SerializeField] private Texture2D _cursorArrowUp;
     [SerializeField] private Texture2D _cursorArrowDown;
@@ -170,7 +170,6 @@ public class RTSCameraController : MonoBehaviour
     private void KeyboardMovement()
     {
         Vector2 moveInput = GameInput.Instance.GetMoveDirection();
-        Debug.Log("Move input : " + moveInput);
         if (moveInput == Vector2.zero)
             return;
         Vector3 moveDirection3D = transform.right * moveInput.x + transform.forward * moveInput.y;
