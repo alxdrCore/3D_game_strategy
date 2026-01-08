@@ -7,9 +7,9 @@ public class UnitMovement : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
     
-    public void SetDestination(RaycastHit destinationPoint)
+    public void SetDestination(Vector3 destinationPoint)
     {
-        _agent.SetDestination(destinationPoint.point);
+        _agent.SetDestination(destinationPoint);
     }
     
     private void OnValidate()

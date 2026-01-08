@@ -54,7 +54,7 @@ public class MovementManager : MonoBehaviour
     {
         foreach(var unit in selectedUnits)
         {
-            unit.GetComponentInChildren<UnitLogic>().SetUnitDestination(destinationHit);
+            unit.GetComponentInChildren<UnitLogic>().SetUnitDestination(destinationHit.point);
         }
     }
 }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class UnitEntity : MonoBehaviour
 {
+    [SerializeField] public bool holdPosition;
+    [SerializeField] public bool attackEnabled = true;
     private void Start()
     {
         SelectionManager.Instance.unitsAll.Add(gameObject);
@@ -10,4 +12,5 @@ public class UnitEntity : MonoBehaviour
     {
         SelectionManager.Instance.unitsAll.Remove(gameObject);
     }
+    
 }
