@@ -1,11 +1,11 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(SphereCollider))]
 public class ChaseController : MonoBehaviour
 {
-    public event Action<Transform> OnEnemyEnterChaseTrigger;
-    public event Action<Transform> OnEnemyExitChaseTrigger;
+    private List<Transform> _enemiesInChaseRange = new();
     private SphereCollider _chaseCollider;
     [SerializeField] private float _chaseDistance = 8f;
     private void Awake()
@@ -20,17 +20,25 @@ public class ChaseController : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            OnEnemyEnterChaseTrigger?.Invoke(other.transform);
+            _enemiesInChaseRange.Add(other.transform);
         }
-
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy") )
         {
-            OnEnemyExitChaseTrigger?.Invoke(other.transform);
+            _enemiesInChaseRange.Remove(other.transform);
         }
-
+    }
+    public bool HasEnemies()
+    {
+        return _enemiesInChaseRange.Count > 0; 
+    }
+    public Transform GetEnemyToChase()
+    {
+        if(!HasEnemies())
+            return null;
+        return _enemiesInChaseRange[0];
     }
     
 }

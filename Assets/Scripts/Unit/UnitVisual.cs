@@ -4,14 +4,14 @@ using UnityEngine.Rendering;
 public class UnitVisual : MonoBehaviour
 {
     private readonly static int Chasing = Animator.StringToHash(IsChasing);
-    private readonly static int InCombat = Animator.StringToHash(IsInCombat);
+    private readonly static int Combat = Animator.StringToHash(IsCombat);
     private readonly static int Idle = Animator.StringToHash(IsIdle);
     private readonly static int Attack = Animator.StringToHash(IsAttack);
     [SerializeField, HideInInspector] private Animator _animator;
     [SerializeField] private GameObject _selectIndicator;
     [SerializeField] private GameObject _hoverIndicator;
     private const string IsChasing = "IsChasing";
-    private const string IsInCombat = "IsInCombat";
+    private const string IsCombat = "IsCombat";
     private const string IsAttack = "Attack";
     private const string IsIdle = "Idle";
     
@@ -27,9 +27,9 @@ public class UnitVisual : MonoBehaviour
     {
         _animator.SetBool(Chasing, state);
     }
-    public void SetAnimatorInCombat(bool state)
+    public void SetAnimatorCombat(bool state)
     {
-        _animator.SetBool(InCombat, state);
+        _animator.SetBool(Combat, state);
     }
     public void SetAnimatorIdle(bool state)
     {

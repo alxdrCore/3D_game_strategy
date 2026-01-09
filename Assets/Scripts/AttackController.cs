@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 public class AttackController : MonoBehaviour
 {
-    private SphereCollider _attackCollider;
+    // Delete all comments
     [SerializeField] private float _attackDistance = 3f;
-    public event Action<Transform> OnEnemyEnterAttackTrigger;
-    public event Action<Transform> OnEnemyExitAttackTrigger;
+    private SphereCollider _attackCollider;
+    private List<Transform> _enemiesInAttackRange = new();
 
     private void Start()
     {
@@ -17,11 +18,23 @@ public class AttackController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Enemy"))
-            OnEnemyEnterAttackTrigger?.Invoke(other.transform);
+            _enemiesInAttackRange.Add(other.transform);
     }
     private void OnTriggerExit(Collider other)
     {
         if(other.CompareTag("Enemy"))
-            OnEnemyExitAttackTrigger?.Invoke(other.transform);
+            _enemiesInAttackRange.Remove(other.transform);
+    }
+    public bool HasEnemies()
+    {
+        bool hasEnemy = _enemiesInAttackRange.Count > 0;
+        return hasEnemy;
+    }
+    public Transform GetEnemyToAttack()
+    {
+        if(!HasEnemies())
+            return null;
+        
+        return _enemiesInAttackRange[0];
     }
 }

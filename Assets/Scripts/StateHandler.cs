@@ -14,7 +14,7 @@ public class StateHandler : MonoBehaviour
     {
         IDLE,
         CHASING,
-        INCOMBAT
+        COMBAT
     }
     private void Awake()
     {
@@ -24,124 +24,109 @@ public class StateHandler : MonoBehaviour
     private void Start()
     {
     }
-    private void OnEnable()
-    {
-        _chaseController.OnEnemyEnterChaseTrigger += StateHandler_OnEnemyEnterChaseTrigger;
-        _chaseController.OnEnemyExitChaseTrigger += StateHandler_OnEnemyExitChaseTrigger;
-        _attackController.OnEnemyEnterAttackTrigger += StateHandler_OnEnemyEnterAttackTrigger;
-        _attackController.OnEnemyExitAttackTrigger += StateHandler_OnEnemyExitAttackTrigger;
-    }
     private void Update()
     {
         HandleStates();
-
     }
     private void HandleStates()
     {
+        CheckState();
         switch (_currentState)
         {
+            case State.COMBAT:
+                Combat();
+                break;
             case State.CHASING:
                 Chasing();
                 break;
-            case State.INCOMBAT:
-                InCombat();
-                break;
-            default:
             case State.IDLE:
+            default:
                 Idle();
                 break;
         }
     }
-    //Можно удалить, если на деле состояния выставляет только StateHandler.
-    // public void SetState(State newState)
-    // {
-    //     if(newState == _currentState)
-    //         return;
-
-    //     switch(newState)
-    //     {
-    //         case State.CHASING:
-    //             SetChaseState();
-    //             break;
-    //         case State.INCOMBAT:
-    //             SetInCombatState();
-    //             break;
-    //         case State.IDLE:
-    //             SetIdleState();
-    //             break;
-    //     }
-    // }
-    private void SetChaseState()
+    private void CheckState()
     {
-        _currentState = State.CHASING;
-        _unitVisual.SetAnimatorChase(true);
-    }
-    private void SetInCombatState()
-    {
-        //Checkups
-        _currentState = State.INCOMBAT;
-        _unitVisual.SetAnimatorInCombat(true);
-
-    }
-    private void SetIdleState()
-    {
-        // Maybe no need in this
-        _currentState = State.IDLE;
-        _unitVisual.SetAnimatorIdle(true);
-    }
-
-    private void Idle()
-    {
-        
-
-    }
-    private void Chasing()
-    {
-        if (_chasingTarget == null)
+        if(_attackController.HasEnemies())
         {
-            SetIdleState();
-            _unitVisual.SetAnimatorChase(false);
-        }
-        _unitLogic.SetUnitDestination(_chasingTarget.position);
-    }
-    private void InCombat()
-    {
-        if (_targetToAttack == null)
+            SetState(State.COMBAT);   
+        } 
+        else if(_chaseController.HasEnemies())
         {
-            SetChaseState();
-            _unitVisual.SetAnimatorInCombat(false);
+            SetState(State.CHASING);
         }
+        else
+        {
+            SetState(State.IDLE);
+        }
+    }
+    private void SetState(State newState)
+    {
+        if(newState == _currentState)
+            return;
+
+        //Мб сделать в кейсах методы выставления состояний, если проверки усложнятся
+        switch(newState)
+        {
+            case State.COMBAT:
+                //Check for something
+                break;
+            case State.CHASING:
+                if(!_unitEntity.holdPosition)
+                    break;
+                return;
+            case State.IDLE:
+                //Check for something
+                break;
+        }
+        SetAnimatorState(_currentState, false);
+        SetAnimatorState(newState, true);
+        _currentState = newState;
+    }
+
+    private void Combat()
+    {
+        _targetToAttack = _attackController.GetEnemyToAttack();
+        if(_targetToAttack == null)
+            return;
         if (_unitEntity.attackEnabled)
             //attack
             return;
 
     }
-    private void StateHandler_OnEnemyEnterChaseTrigger(Transform enemyObject)
+    private void Chasing()
     {
-        if (_unitEntity.holdPosition)
+        _chasingTarget = _chaseController.GetEnemyToChase();
+
+        if (_chasingTarget == null)
             return;
 
-        _chasingTarget = enemyObject;
-        SetChaseState();
+        _unitLogic.SetUnitDestination(_chasingTarget.position);
+    }
+    private void Idle()
+    {
+        //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
     }
 
+    private void SetAnimatorState(State state, bool isActive)
+    {
+        switch(state)
+        {
+            case State.IDLE:
+                _unitVisual.SetAnimatorIdle(isActive);
+                break;
+            case State.CHASING:
+                _unitVisual.SetAnimatorChase(isActive);
+                break;
+            case State.COMBAT:
+                _unitVisual.SetAnimatorCombat(isActive);
+                break;
+            default:
+                break;
+        }
 
-    private void StateHandler_OnEnemyExitChaseTrigger(Transform enemyObject)
-    {
-        SetIdleState();
-        _chasingTarget = null;
-        _unitVisual.SetAnimatorChase(false);
     }
-    private void StateHandler_OnEnemyEnterAttackTrigger(Transform enemyObject)
-    {
-        _targetToAttack = enemyObject;
-        SetInCombatState();
-
-    }
-    private void StateHandler_OnEnemyExitAttackTrigger(Transform enemyObject)
-    {
-        _unitVisual.SetAnimatorInCombat(false);
-    }
+    
 
     private void OnValidate()
     {
@@ -155,11 +140,5 @@ public class StateHandler : MonoBehaviour
             _unitLogic = GetComponent<UnitLogic>();
 
     }
-    private void OnDisable()
-    {
-        _chaseController.OnEnemyEnterChaseTrigger -= StateHandler_OnEnemyEnterChaseTrigger;
-        _chaseController.OnEnemyExitChaseTrigger -= StateHandler_OnEnemyExitChaseTrigger;
-        _attackController.OnEnemyEnterAttackTrigger -= StateHandler_OnEnemyEnterAttackTrigger;
-        _attackController.OnEnemyExitAttackTrigger -= StateHandler_OnEnemyExitAttackTrigger;
-    }
+    
 }
