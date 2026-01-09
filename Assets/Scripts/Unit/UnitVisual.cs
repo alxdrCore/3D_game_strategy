@@ -14,7 +14,15 @@ public class UnitVisual : MonoBehaviour
     private const string IsCombat = "IsCombat";
     private const string IsAttack = "Attack";
     private const string IsIdle = "Idle";
+    private bool _lookAtIsActive;
+    private Transform _entityToLookAt;
     
+    private void LateUpdate()
+    {
+        if(_lookAtIsActive)
+            LookAtEntity();
+
+    }
     public void ShowSelected(bool isSelected)
     {
         _selectIndicator.SetActive(isSelected);
@@ -34,6 +42,21 @@ public class UnitVisual : MonoBehaviour
     public void SetAnimatorIdle(bool state)
     {
         _animator.SetBool(Idle, state);
+    }
+    private void LookAtEntity()
+    {
+        if(_entityToLookAt)
+            transform.LookAt(_entityToLookAt);
+        else
+            _lookAtIsActive = false;
+    }
+    public void AimAt(bool isEnable, Transform enemyToAimAt)
+    {
+        _lookAtIsActive = isEnable;
+        if(isEnable)
+            _entityToLookAt = enemyToAimAt;
+        else
+            _entityToLookAt = null;
     }
     private void OnValidate()
     {

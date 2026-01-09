@@ -65,8 +65,8 @@ public class StateHandler : MonoBehaviour
         if(newState == _currentState)
             return;
 
-        SetAnimatorState(_currentState, false);
-        SetAnimatorState(newState, true);
+        ChangeAnimatorState(_currentState, false);
+        ChangeAnimatorState(newState, true);
         _currentState = newState;
     }
 
@@ -75,12 +75,13 @@ public class StateHandler : MonoBehaviour
         if(_targetToAttack == null)
             _targetToAttack = _attackController.GetEnemyToAttack();
 
+
     }
     private void Chasing()
     {
         if (_chasingTarget == null)
             _chasingTarget = _chaseController.GetEnemyToChase();
-
+        
         _unitLogic.SetUnitDestination(_chasingTarget.position);
     }
     private void Idle()
@@ -88,7 +89,7 @@ public class StateHandler : MonoBehaviour
         //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
     }
 
-    private void SetAnimatorState(State state, bool isActive)
+    private void ChangeAnimatorState(State state, bool isActive)
     {
         switch(state)
         {

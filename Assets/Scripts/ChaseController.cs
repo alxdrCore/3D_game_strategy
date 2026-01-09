@@ -5,9 +5,9 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SphereCollider))]
 public class ChaseController : MonoBehaviour
 {
+    [SerializeField] private float _chaseDistance = 8f;
     private List<Transform> _enemiesInChaseRange = new();
     private SphereCollider _chaseCollider;
-    [SerializeField] private float _chaseDistance = 8f;
     private void Awake()
     {
         _chaseCollider = GetComponent<SphereCollider>();
