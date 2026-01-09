@@ -7,21 +7,20 @@ public class UnitVisual : MonoBehaviour
     private readonly static int Combat = Animator.StringToHash(IsCombat);
     private readonly static int Idle = Animator.StringToHash(IsIdle);
     private readonly static int Attack = Animator.StringToHash(IsAttack);
-    [SerializeField, HideInInspector] private Animator _animator;
+    [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _selectIndicator;
     [SerializeField] private GameObject _hoverIndicator;
     private const string IsChasing = "IsChasing";
     private const string IsCombat = "IsCombat";
     private const string IsAttack = "Attack";
     private const string IsIdle = "Idle";
-    private bool _lookAtIsActive;
+    private bool _aimAtIsActive;
     private Transform _entityToLookAt;
     
     private void LateUpdate()
     {
-        if(_lookAtIsActive)
+        if(_aimAtIsActive)
             LookAtEntity();
-
     }
     public void ShowSelected(bool isSelected)
     {
@@ -48,20 +47,21 @@ public class UnitVisual : MonoBehaviour
         if(_entityToLookAt)
             transform.LookAt(_entityToLookAt);
         else
-            _lookAtIsActive = false;
+            _aimAtIsActive = false;
     }
-    public void AimAt(bool isEnable, Transform enemyToAimAt)
+    public void AimAt(Transform enemyToAimAt)
     {
-        _lookAtIsActive = isEnable;
-        if(isEnable)
+        if(enemyToAimAt)
+        {
+            _aimAtIsActive = true;
             _entityToLookAt = enemyToAimAt;
+        }
         else
             _entityToLookAt = null;
     }
-    private void OnValidate()
+    public void SetAimAtActive(bool isActive)
     {
-        if(_animator == null)
-            _animator = GetComponent<Animator>();
-        
+        _aimAtIsActive = isActive;
     }
+    
 }

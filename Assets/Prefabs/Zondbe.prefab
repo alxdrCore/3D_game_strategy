@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 1227924189739740083}
   - component: {fileID: 7582000163427134149}
   - component: {fileID: 7486649178961946825}
-  - component: {fileID: 4124305120744373854}
+  - component: {fileID: 1775392389287454855}
   m_Layer: 0
   m_Name: ZondbeLogic
   m_TagString: Untagged
@@ -150,8 +150,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bed5caf663206e4abaddb47d2169b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitLogic
+  _unit: {fileID: 7415093632001542980}
   _unitMovement: {fileID: 7582000163427134149}
---- !u!114 &4124305120744373854
+  _attackController: {fileID: 3862959853756504889}
+  _chaseController: {fileID: 5224603406229216415}
+  _stateMachine: {fileID: 1775392389287454855}
+  _unitVisual: {fileID: 483334504067386198}
+--- !u!114 &1775392389287454855
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,11 +168,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8309671d51e9c4cb613a14a128c251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StateHandler
-  _unitEntity: {fileID: 7415093632001542980}
+  _unit: {fileID: 7415093632001542980}
   _chaseController: {fileID: 5224603406229216415}
   _attackController: {fileID: 3862959853756504889}
   _unitLogic: {fileID: 7486649178961946825}
   _unitVisual: {fileID: 483334504067386198}
+  currentState: 0
 --- !u!1 &8288783091220629268
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa18c512e9b47b41bc182b4e56d8a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackController
-  _attackDistance: 0.5
 --- !u!1 &8389907116296559557
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9691138f7d5704498eae1d509ed8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChaseController
-  _chaseDistance: 8
 --- !u!1 &8550009804135182342
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,8 +488,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec8d6e25fbd08046a6c27d770ec29df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
+  _unitLogic: {fileID: 7486649178961946825}
   holdPosition: 0
   attackEnabled: 1
+  _chaseDistance: 8
+  _attackDistance: 1
 --- !u!1001 &3196983313386437901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -570,31 +577,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 483334504067386198}
+      addedObject: {fileID: 1280732799930541603}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1280732799930541603}
+      addedObject: {fileID: 483334504067386198}
   m_SourcePrefab: {fileID: 100100000, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
 --- !u!1 &2349927599350923356 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
   m_PrefabInstance: {fileID: 3196983313386437901}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &483334504067386198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2349927599350923356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
-  _animator: {fileID: 1280732799930541603}
-  _selectIndicator: {fileID: 8550009804135182342}
-  _hoverIndicator: {fileID: 3803213710235917902}
 --- !u!95 &1280732799930541603
 Animator:
   serializedVersion: 7
@@ -617,6 +609,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &483334504067386198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349927599350923356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42605eab6f22bc48b2d3dfab3f7ed9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitVisual
+  _animator: {fileID: 1280732799930541603}
+  _selectIndicator: {fileID: 8550009804135182342}
+  _hoverIndicator: {fileID: 3803213710235917902}
 --- !u!4 &3159079562525186790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2d68aee4086a8994ba86e8ab6024ce6f, type: 3}
