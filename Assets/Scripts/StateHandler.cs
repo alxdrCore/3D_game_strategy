@@ -47,11 +47,11 @@ public class StateHandler : MonoBehaviour
     }
     private void CheckState()
     {
-        if(_attackController.HasEnemies())
+        if(_attackController.HasEnemies() && _unitEntity.attackEnabled)
         {
             SetState(State.COMBAT);   
         } 
-        else if(_chaseController.HasEnemies())
+        else if(_chaseController.HasEnemies() && !_unitEntity.holdPosition)
         {
             SetState(State.CHASING);
         }
@@ -65,21 +65,6 @@ public class StateHandler : MonoBehaviour
         if(newState == _currentState)
             return;
 
-        //Мб сделать в кейсах методы выставления состояний, если проверки усложнятся
-        switch(newState)
-        {
-            case State.COMBAT:
-                if (!_unitEntity.attackEnabled)
-                    return;
-                break;
-            case State.CHASING:
-                if(_unitEntity.holdPosition)
-                    return;
-                break;
-            case State.IDLE:
-                //Check for something
-                break;
-        }
         SetAnimatorState(_currentState, false);
         SetAnimatorState(newState, true);
         _currentState = newState;
