@@ -69,12 +69,13 @@ public class StateHandler : MonoBehaviour
         switch(newState)
         {
             case State.COMBAT:
-                //Check for something
+                if (!_unitEntity.attackEnabled)
+                    return;
                 break;
             case State.CHASING:
-                if(!_unitEntity.holdPosition)
-                    break;
-                return;
+                if(_unitEntity.holdPosition)
+                    return;
+                break;
             case State.IDLE:
                 //Check for something
                 break;
@@ -86,20 +87,14 @@ public class StateHandler : MonoBehaviour
 
     private void Combat()
     {
-        _targetToAttack = _attackController.GetEnemyToAttack();
         if(_targetToAttack == null)
-            return;
-        if (_unitEntity.attackEnabled)
-            //attack
-            return;
+            _targetToAttack = _attackController.GetEnemyToAttack();
 
     }
     private void Chasing()
     {
-        _chasingTarget = _chaseController.GetEnemyToChase();
-
         if (_chasingTarget == null)
-            return;
+            _chasingTarget = _chaseController.GetEnemyToChase();
 
         _unitLogic.SetUnitDestination(_chasingTarget.position);
     }
@@ -124,9 +119,7 @@ public class StateHandler : MonoBehaviour
             default:
                 break;
         }
-
     }
-    
 
     private void OnValidate()
     {
@@ -138,7 +131,5 @@ public class StateHandler : MonoBehaviour
             _unitEntity = GetComponentInParent<UnitEntity>();
         if (_unitLogic == null)
             _unitLogic = GetComponent<UnitLogic>();
-
     }
-    
 }
