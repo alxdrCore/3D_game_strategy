@@ -15,7 +15,6 @@ public class Unit : MonoBehaviour
         SelectionManager.Instance.unitsAll.Add(gameObject);
         _unitLogic.SetAttackDistance(_attackDistance);
         _unitLogic.SetChaseDistance(_chaseDistance);
-
     }
     private void OnDestroy()
     {

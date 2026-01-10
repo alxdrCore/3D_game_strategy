@@ -10,8 +10,8 @@ public class UnitVisual : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _selectIndicator;
     [SerializeField] private GameObject _hoverIndicator;
-    private const string IsChasing = "IsChasing";
-    private const string IsCombat = "IsCombat";
+    private const string IsChasing = "Chase";
+    private const string IsCombat = "Combat";
     private const string IsAttack = "Attack";
     private const string IsIdle = "Idle";
     private bool _aimAtIsActive;

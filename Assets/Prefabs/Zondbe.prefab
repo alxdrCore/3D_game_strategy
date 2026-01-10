@@ -490,7 +490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Unit
   _unitLogic: {fileID: 7486649178961946825}
   holdPosition: 0
-  attackEnabled: 1
+  attackEnabled: 0
   _chaseDistance: 8
   _attackDistance: 1
 --- !u!1001 &3196983313386437901

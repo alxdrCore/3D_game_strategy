@@ -8,7 +8,9 @@ public class ChaseController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Enemy"))
+        {
             OnEnemyEnterChaseZone?.Invoke(other.transform);
+        }
     }
     private void OnTriggerExit(Collider other)
     {

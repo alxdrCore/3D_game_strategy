@@ -12,9 +12,4 @@ public class UnitMovement : MonoBehaviour
         _agent.SetDestination(destinationPoint);
     }
     
-    private void OnValidate()
-    {
-        if(_agent == null)
-            _agent = GetComponent<NavMeshAgent>();
-    }
 }

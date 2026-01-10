@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -16,14 +17,10 @@ public class StateMachine: MonoBehaviour
     }
     private void OnEnable()
     {
-        _attackController.OnEnemyEnterAttackZone += CheckState;
-        _attackController.OnEnemyExitAttackZone += CheckState;
-        _chaseController.OnEnemyEnterChaseZone += CheckState;
-        _chaseController.OnEnemyExitChaseZone += CheckState;
-        _unitLogic.OnEnemyRemovedFromList += CheckState;
+        _unitLogic.OnEnemyListChange += CheckState;
     }
    
-    private void CheckState(Transform enemy)
+    private void CheckState(object sender, EventArgs e)
     {
         if(_unitLogic.HasEnemiesToAttack() && _unit.attackEnabled)
         {
@@ -44,9 +41,27 @@ public class StateMachine: MonoBehaviour
         if(newState == currentState)
             return;
 
+        Debug.Log("Changins state " + currentState + "to a " + newState);
+        OnStateExit(currentState);
         ChangeAnimatorState(currentState, false);
         ChangeAnimatorState(newState, true);
         currentState = newState;
+        Debug.Log("State is changed to a " + currentState);
+    }
+    private void OnStateExit(State state)
+    {
+        switch(state)
+        {
+            case State.IDLE:
+                break;
+            case State.CHASING:
+                _unitLogic.SetUnitDestination(_unitLogic.transform.position);
+                break;
+            case State.COMBAT:
+                break;
+            default:
+                break;
+        }
     }
     private void ChangeAnimatorState(State state, bool isActive)
     {
@@ -67,10 +82,7 @@ public class StateMachine: MonoBehaviour
     }
     private void OnDisable()
     {
-        _attackController.OnEnemyEnterAttackZone -= CheckState;
-        _attackController.OnEnemyExitAttackZone -= CheckState;
-        _chaseController.OnEnemyEnterChaseZone -= CheckState;
-        _chaseController.OnEnemyExitChaseZone -= CheckState;
+        _unitLogic.OnEnemyListChange -= CheckState;
     }
     
 }
