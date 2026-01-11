@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 7582000163427134149}
   - component: {fileID: 7486649178961946825}
   - component: {fileID: 1775392389287454855}
+  - component: {fileID: 4745015443690103436}
   m_Layer: 0
   m_Name: ZondbeLogic
   m_TagString: Untagged
@@ -150,11 +151,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bed5caf663206e4abaddb47d2169b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitLogic
-  _unit: {fileID: 7415093632001542980}
   _unitMovement: {fileID: 7582000163427134149}
+  _stateMachine: {fileID: 1775392389287454855}
+  _priorityMachine: {fileID: 4745015443690103436}
+  _unit: {fileID: 7415093632001542980}
   _attackController: {fileID: 3862959853756504889}
   _chaseController: {fileID: 5224603406229216415}
-  _stateMachine: {fileID: 1775392389287454855}
   _unitVisual: {fileID: 483334504067386198}
 --- !u!114 &1775392389287454855
 MonoBehaviour:
@@ -168,12 +170,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8309671d51e9c4cb613a14a128c251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StateHandler
-  _unit: {fileID: 7415093632001542980}
-  _chaseController: {fileID: 5224603406229216415}
   _attackController: {fileID: 3862959853756504889}
+  _chaseController: {fileID: 5224603406229216415}
   _unitLogic: {fileID: 7486649178961946825}
+  _priorityMachine: {fileID: 4745015443690103436}
+  _unit: {fileID: 7415093632001542980}
   _unitVisual: {fileID: 483334504067386198}
   currentState: 0
+--- !u!114 &4745015443690103436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887675284486520083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a02b546f63b09dc419561d7221dc7c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PriorityMachine
+  _agent: {fileID: 7335539222920975321}
+  currentPriority: 2
 --- !u!1 &8288783091220629268
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,7 +441,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1227924189739740083}
@@ -441,7 +458,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -489,8 +506,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
   _unitLogic: {fileID: 7486649178961946825}
-  holdPosition: 0
-  attackEnabled: 0
+  holdPosition: 1
+  attackEnabled: 1
   _chaseDistance: 8
   _attackDistance: 1
 --- !u!1001 &3196983313386437901

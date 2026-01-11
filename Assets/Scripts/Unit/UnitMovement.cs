@@ -10,6 +10,7 @@ public class UnitMovement : MonoBehaviour
     public void SetDestination(Vector3 destinationPoint)
     {
         _agent.SetDestination(destinationPoint);
+        
     }
     
 }

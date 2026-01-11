@@ -7,7 +7,12 @@ public class MovementManager : MonoBehaviour
     public static MovementManager Instance {get; private set;}
     [SerializeField, HideInInspector] private Camera _cam;
     [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private LayerMask _objectAttackableLayer;
+
     [SerializeField] private GameObject _groundDestinationMarker; 
+
+    public bool inputMovePriority;
+    public bool inputAttackPriority;
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -20,24 +25,28 @@ public class MovementManager : MonoBehaviour
     private void Start()
     {
         _cam = Camera.main;
-        GameInput.Instance.OnMouseRightStarted += UnitMovementManager_OnMouseRightStarted;
     } 
-
-    private void Update()
+    private void OnEnable()
     {
+        GameInput.Instance.OnMouseRightStarted += UnitMovementManager_OnMouseRightStarted;
     }
-    
-    
+
     private void UnitMovementManager_OnMouseRightStarted(object sender, EventArgs e)
     {
+        if(SelectionManager.Instance.unitsSelected.Count <= 0)
+            return;
+
         RaycastHit hit;
         Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
-        if(!Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, _objectAttackableLayer))
         {
-            return;
+            //Send to an enemy and set attack priority
+            Debug.Log("RaycastHit on enemy object");
+            SendToAttack(SelectionManager.Instance.unitsSelected, hit);
         }
-        if(SelectionManager.Instance.unitsSelected.Count > 0)
+        else if(Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
         {
+            //Sets destination and use input priority to move
             SetDestinationMarker(hit);
             SendToDestination(SelectionManager.Instance.unitsSelected, hit);
         }
@@ -54,7 +63,18 @@ public class MovementManager : MonoBehaviour
     {
         foreach(var unit in selectedUnits)
         {
-            unit.GetComponentInChildren<UnitLogic>().SetUnitDestination(destinationHit.point);
+            unit.GetComponentInChildren<UnitLogic>().OrderToMoveTo(destinationHit);
         }
+    }
+    private void SendToAttack(List<GameObject> selectedUnits, RaycastHit destinationHit)
+    {
+        foreach(var unit in selectedUnits)
+        {
+            unit.GetComponentInChildren<UnitLogic>().OrderToAttack(destinationHit.transform); 
+        }
+    }
+    private void OnDisable()
+    {
+        GameInput.Instance.OnMouseRightStarted -= UnitMovementManager_OnMouseRightStarted;
     }
 }

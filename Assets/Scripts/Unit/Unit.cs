@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
     [SerializeField] public bool attackEnabled = true;
     [SerializeField] private float _chaseDistance = 8f;
     [SerializeField] private float _attackDistance = 0.5f;
+
     
 
     private void Start()
