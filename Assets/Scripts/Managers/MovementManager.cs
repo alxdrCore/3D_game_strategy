@@ -40,8 +40,6 @@ public class MovementManager : MonoBehaviour
         Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, _objectAttackableLayer))
         {
-            //Send to an enemy and set attack priority
-            Debug.Log("RaycastHit on enemy object");
             SendToAttack(SelectionManager.Instance.unitsSelected, hit);
         }
         else if(Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
@@ -63,14 +61,18 @@ public class MovementManager : MonoBehaviour
     {
         foreach(var unit in selectedUnits)
         {
-            unit.GetComponentInChildren<UnitLogic>().OrderToMoveTo(destinationHit);
+            UnitLogic _unitLogic= unit.GetComponentInChildren<UnitLogic>();
+            _unitLogic.currentIntent = Intent.MoveTo;
+            _unitLogic.OrderToMoveTo(destinationHit); 
         }
     }
     private void SendToAttack(List<GameObject> selectedUnits, RaycastHit destinationHit)
     {
         foreach(var unit in selectedUnits)
         {
-            unit.GetComponentInChildren<UnitLogic>().OrderToAttack(destinationHit.transform); 
+            UnitLogic _unitLogic= unit.GetComponentInChildren<UnitLogic>();
+            _unitLogic.currentIntent = Intent.Attack;
+            _unitLogic.OrderToAttack(destinationHit.transform); 
         }
     }
     private void OnDisable()

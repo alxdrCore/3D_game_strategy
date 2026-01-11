@@ -101,7 +101,6 @@ GameObject:
   - component: {fileID: 7582000163427134149}
   - component: {fileID: 7486649178961946825}
   - component: {fileID: 1775392389287454855}
-  - component: {fileID: 4745015443690103436}
   m_Layer: 0
   m_Name: ZondbeLogic
   m_TagString: Untagged
@@ -153,11 +152,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitLogic
   _unitMovement: {fileID: 7582000163427134149}
   _stateMachine: {fileID: 1775392389287454855}
-  _priorityMachine: {fileID: 4745015443690103436}
   _unit: {fileID: 7415093632001542980}
   _attackController: {fileID: 3862959853756504889}
   _chaseController: {fileID: 5224603406229216415}
+  _agent: {fileID: 7335539222920975321}
   _unitVisual: {fileID: 483334504067386198}
+  currentIntent: 2
 --- !u!114 &1775392389287454855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,24 +173,9 @@ MonoBehaviour:
   _attackController: {fileID: 3862959853756504889}
   _chaseController: {fileID: 5224603406229216415}
   _unitLogic: {fileID: 7486649178961946825}
-  _priorityMachine: {fileID: 4745015443690103436}
   _unit: {fileID: 7415093632001542980}
   _unitVisual: {fileID: 483334504067386198}
   currentState: 0
---- !u!114 &4745015443690103436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4887675284486520083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a02b546f63b09dc419561d7221dc7c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PriorityMachine
-  _agent: {fileID: 7335539222920975321}
-  currentPriority: 2
 --- !u!1 &8288783091220629268
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,7 +447,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1.5
+  m_StoppingDistance: 0.9
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

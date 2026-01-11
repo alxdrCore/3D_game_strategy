@@ -1,24 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using Unity.VisualScripting.Antlr3.Runtime;
+using UnityEngine.AI;
 
 public class UnitLogic : MonoBehaviour
 {
     public event EventHandler OnEnemyListChange;
     [SerializeField, HideInInspector] private UnitMovement _unitMovement;
     [SerializeField, HideInInspector] private StateMachine _stateMachine;
-    [SerializeField, HideInInspector] private PriorityMachine _priorityMachine;
     [SerializeField, HideInInspector] private Unit _unit;
     [SerializeField, HideInInspector] private AttackController _attackController;
     [SerializeField, HideInInspector] private ChaseController _chaseController;
+    [SerializeField, HideInInspector] private NavMeshAgent _agent;
     [SerializeField] private UnitVisual _unitVisual;
+    public Intent currentIntent = Intent.Default;
 
 
     private List<Transform> _enemiesToAttack = new();
     private List<Transform> _enemiesToChase = new();
 
-    private Transform _orderedTargetToAttack;
     private Transform _targetToAttack;
     private void OnEnable()
     {
@@ -48,18 +48,9 @@ public class UnitLogic : MonoBehaviour
     {
         return _enemiesToChase.Count > 0;
     }
-    public void SetUnitPriority(Priority newPriority)
-    {
-        _priorityMachine.currentPriority = newPriority;
-        Debug.Log("New priority : " + newPriority);
-    }
     public void SetUnitDestination(Vector3 destinationPoint)
     {
         _unitMovement.SetDestination(destinationPoint);
-    }
-    public Priority GetCurrentUnitPriority()
-    {
-        return _priorityMachine.currentPriority;
     }
     private void HandleStates()
     {
@@ -74,6 +65,9 @@ public class UnitLogic : MonoBehaviour
             case State.Combat:
                 Combat();
                 break;
+            case State.MoveTo:
+                MovingTo();
+                break;
             default:
                 break;
         }
@@ -81,76 +75,81 @@ public class UnitLogic : MonoBehaviour
     private void Idle()
     {
         _unitVisual.SetAimAtActive(false);
+
         //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
     }
 
     private void Chasing()
     {
-        switch (_priorityMachine.currentPriority)
+        if (_targetToAttack == null && (_enemiesToAttack.Count + _enemiesToChase.Count) <= 0)
         {
-            case Priority.ATTACK:
-                if (_orderedTargetToAttack != null)
-                {
-                    SetUnitDestination(_orderedTargetToAttack.position);
-                }
-                break;
-            case Priority.MOVE:
-                return;
-            default:
-            case Priority.DEFAULT:
-                // if (HasEnemiesToChase() && !_unit.holdPosition)
-                //     SetUnitDestination(_enemiesToChase[0].position);
-                // _unitVisual.AimAt(_enemiesToChase[0]);
-                break;
+            _stateMachine.SetState(State.Idle);
+        }
+        if (_agent.destination != _targetToAttack.position)
+            SetUnitDestination(_targetToAttack.position);
+        if (!_agent.hasPath || _agent.remainingDistance <= _agent.stoppingDistance)
+        {
+            _stateMachine.SetState(State.Combat);
+        }
+        // if (HasEnemiesToChase() && !_unit.holdPosition)
+        //     SetUnitDestination(_enemiesToChase[0].position);
+        // _unitVisual.AimAt(_enemiesToChase[0]);
+
+    }
+    private void MovingTo()
+    {
+        //ignore everything
+        if (!_agent.hasPath || _agent.remainingDistance <= _agent.stoppingDistance)
+        {
+            _stateMachine.SetState(State.Idle);
+            currentIntent = Intent.Default;
         }
 
     }
     private void Combat()
     {
-        //Do combat
-
-        if (_orderedTargetToAttack == null)
-        {
-            SetUnitPriority(Priority.DEFAULT);
-        }
+        //Do combat with aim at
+        //_unitVisual.AimAt(_targetToAttack);
         if (_targetToAttack == null)
         {
             _targetToAttack = GetTargetToAttack();
         }
-        _unitVisual.AimAt(_orderedTargetToAttack);
+        //Get event if target died, then set intent to default
+        if (_targetToAttack == null && (_enemiesToAttack.Count + _enemiesToChase.Count) <= 0)
+        {
+            _stateMachine.SetState(State.Idle);
+        }
+        if (!_enemiesToAttack.Contains(_targetToAttack) && _targetToAttack != null)
+        {
+            _stateMachine.SetState(State.Chase);
+        }
     }
     public void OrderToMoveTo(RaycastHit destinationHit)
     {
-        _orderedTargetToAttack = null;
-        SetUnitPriority(Priority.MOVE);
+        _targetToAttack = null;
         SetUnitDestination(destinationHit.point);
+        _stateMachine.SetState(State.MoveTo);
     }
     public void OrderToAttack(Transform enemyToAttack)
     {
-        _orderedTargetToAttack = enemyToAttack;
-        _targetToAttack = _orderedTargetToAttack;
-        SetUnitPriority(Priority.ATTACK);
-        if (_attackController == null)
-        {
-            _stateMachine.SetState(State.Chase);
-            SetUnitDestination(enemyToAttack.position);
-            return;
-        }
+        _targetToAttack = enemyToAttack;
+        //Add check if unit has Attack opportunity
 
-        if (_enemiesToAttack.Contains(_orderedTargetToAttack))
+        if (_enemiesToAttack.Contains(_targetToAttack))
         {
             _stateMachine.SetState(State.Combat);
         }
         else
         {
-            _enemiesToChase.Add(_orderedTargetToAttack);
+            if (!_enemiesToChase.Contains(_targetToAttack))
+                _enemiesToChase.Add(_targetToAttack);
             _stateMachine.SetState(State.Chase);
         }
     }
     private Transform GetTargetToAttack()
     {
         //Should be complexed logic of getting nearest enemy or smth
-        return _enemiesToAttack[0];
+        return _enemiesToAttack.Count > 0 ? _enemiesToAttack[0] : null;
     }
     private void UnitLogic_OnEnemyEnterAttackZone(Transform enemy)
     {
@@ -174,6 +173,8 @@ public class UnitLogic : MonoBehaviour
     }
     private void UnitLogic_OnEnemyExitChaseZone(Transform enemy)
     {
+        if (enemy == _targetToAttack)
+            return;
         RemoveEnemyFromList(_enemiesToChase, enemy);
         OnEnemyListChange?.Invoke(this, EventArgs.Empty);
     }
@@ -198,13 +199,13 @@ public class UnitLogic : MonoBehaviour
             _unitMovement.GetComponent<UnitMovement>();
         if (_stateMachine == null)
             _stateMachine = GetComponent<StateMachine>();
-        if (_priorityMachine == null)
-            _priorityMachine = GetComponent<PriorityMachine>();
         if (_unit == null)
             _unit = GetComponentInParent<Unit>();
         if (_attackController == null)
             _attackController = GetComponentInChildren<AttackController>();
         if (_chaseController == null)
             _chaseController = GetComponentInChildren<ChaseController>();
+        if (_agent == null)
+            _agent = GetComponentInParent<NavMeshAgent>();
     }
 }
