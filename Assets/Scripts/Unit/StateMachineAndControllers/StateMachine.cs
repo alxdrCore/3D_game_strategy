@@ -1,46 +1,115 @@
 using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.AI;
 
-public class StateMachine: MonoBehaviour
+
+public class StateMachine : MonoBehaviour
 {
-    [SerializeField, HideInInspector] private AttackController _attackController;
-    [SerializeField, HideInInspector] private ChaseController _chaseController;
     [SerializeField, HideInInspector] private UnitLogic _unitLogic;
-    [SerializeField] private Unit _unit;
+    [SerializeField, HideInInspector] private NavMeshAgent _agent;
+    [SerializeField, HideInInspector] private Unit _unit;
+
     [SerializeField] private UnitVisual _unitVisual;
     public State currentState;
     private void Start()
     {
         currentState = State.Idle;
     }
+    private void Update()
+    {
+        StatesUpdate();
+    }
     private void OnEnable()
     {
-        _unitLogic.OnEnemyListChange += CheckState;
+        //_unitLogic.OnEnemyListChange += CheckState;
+        _unitLogic.OnNewIntent += HandleNewIntent;
     }
-   
-    private void CheckState(object sender, EventArgs e)
-    {
 
-        // if(_unitLogic.HasEnemiesToAttack() && _unit.attackEnabled)
-        // {
-        //     SetState(State.Combat);   
-        // } 
-        // else if(_unitLogic.HasEnemiesToChase() && !_unit.holdPosition)
-        // {
-        //     SetState(State.Chase);
-        // }
-        // // else
-        // // {
-        // //     SetState(State.Idle);
-        // // }
+    private void HandleNewIntent(Intent newIntent)
+    {
+        switch (newIntent)
+        {
+            case Intent.MoveTo:
+                SetState(State.MoveTo);
+                break;
+            case Intent.Attack:
+                if (_unitLogic.enemiesToAttack.Contains(_unitLogic.targetToAttack))
+                    SetState(State.Combat);
+                else
+                {
+                    if (!_unitLogic.enemiesToChase.Contains(_unitLogic.targetToAttack))
+                        _unitLogic.enemiesToChase.Add(_unitLogic.targetToAttack);
+                    SetState(State.Chase);
+                }
+                break;
+            default:
+            case Intent.Default:
+                break;
+                //insert other intents
+        }
     }
-    
+    private void StatesUpdate()
+    {
+        switch (currentState)
+        {
+            case State.Chase:
+                if (_unitLogic.targetToAttack == null && (_unitLogic.enemiesToAttack.Count + _unitLogic.enemiesToChase.Count) <= 0)
+                {
+                    SetState(State.Idle);
+                }
+                if (!_agent.hasPath || _agent.remainingDistance <= _agent.stoppingDistance)
+                {
+                    SetState(State.Combat);
+                }
+                break;
+            case State.MoveTo:
+                if (!_agent.hasPath || _agent.remainingDistance <= _agent.stoppingDistance)
+                {
+                    SetState(State.Idle);
+                    _unitLogic.SetNewIntent(Intent.Default);
+                }
+                break;
+            case State.Combat:
+                if (_unitLogic.targetToAttack == null && (_unitLogic.enemiesToAttack.Count + _unitLogic.enemiesToChase.Count) <= 0)
+                {
+                    SetState(State.Idle);
+                }
+                if (!_unitLogic.enemiesToAttack.Contains(_unitLogic.targetToAttack) && _unitLogic.targetToAttack != null)
+                {
+                    SetState(State.Chase);
+                }
+                break;
+            case State.Idle:
+                if(_unitLogic.enemiesToChase.Count > 0 && !_unit.holdPosition)
+                    SetState(State.Chase);
+                if(_unitLogic.enemiesToAttack.Count > 0 && _unit.autoAttackEnabled)
+                    SetState(State.Combat);
+                break;
+
+        }
+        
+    }
+
     public void SetState(State newState)
     {
-        if(newState == currentState)
+        if (newState == currentState)
             return;
 
+        switch(newState)
+        {
+            case State.Chase:
+                if(_unitLogic.currentIntent == Intent.Attack || !_unit.holdPosition )
+                    break;
+                return;
+            case State.Combat:
+                if(_unitLogic.currentIntent == Intent.Attack || _unit.autoAttackEnabled)
+                    break;
+                return;
+            default:
+                break;
+        }
+        
         OnStateExit(currentState);
         ChangeAnimatorState(currentState, false);
         ChangeAnimatorState(newState, true);
@@ -48,7 +117,7 @@ public class StateMachine: MonoBehaviour
     }
     private void OnStateExit(State state)
     {
-        switch(state)
+        switch (state)
         {
             case State.Idle:
                 break;
@@ -64,7 +133,7 @@ public class StateMachine: MonoBehaviour
     }
     private void ChangeAnimatorState(State state, bool isActive)
     {
-        switch(state)
+        switch (state)
         {
             case State.Idle:
                 _unitVisual.SetAnimatorIdle(isActive);
@@ -84,16 +153,16 @@ public class StateMachine: MonoBehaviour
     }
     private void OnDisable()
     {
-        _unitLogic.OnEnemyListChange -= CheckState;
+        //_unitLogic.OnEnemyListChange -= CheckState;
     }
     private void OnValidate()
     {
-        if(_attackController == null)
-            _attackController = GetComponentInChildren<AttackController>();
-        if(_chaseController == null)
-            _chaseController = GetComponentInChildren<ChaseController>();        
-        if(_unitLogic == null)
+        if (_unitLogic == null)
             _unitLogic = GetComponent<UnitLogic>();
+        if (_agent == null)
+            _agent = GetComponentInParent<NavMeshAgent>();
+        if(_unit == null)
+            _unit = GetComponentInParent<Unit>();
     }
 
 }

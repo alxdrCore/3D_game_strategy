@@ -61,8 +61,8 @@ public class MovementManager : MonoBehaviour
     {
         foreach(var unit in selectedUnits)
         {
+            //cut to one line
             UnitLogic _unitLogic= unit.GetComponentInChildren<UnitLogic>();
-            _unitLogic.currentIntent = Intent.MoveTo;
             _unitLogic.OrderToMoveTo(destinationHit); 
         }
     }
@@ -70,8 +70,8 @@ public class MovementManager : MonoBehaviour
     {
         foreach(var unit in selectedUnits)
         {
+            //cut to one line
             UnitLogic _unitLogic= unit.GetComponentInChildren<UnitLogic>();
-            _unitLogic.currentIntent = Intent.Attack;
             _unitLogic.OrderToAttack(destinationHit.transform); 
         }
     }

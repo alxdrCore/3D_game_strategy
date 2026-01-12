@@ -5,7 +5,7 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] private UnitLogic _unitLogic;
     [SerializeField] public bool holdPosition;
-    [SerializeField] public bool attackEnabled = true;
+    [SerializeField] public bool autoAttackEnabled = true;
     [SerializeField] private float _chaseDistance = 8f;
     [SerializeField] private float _attackDistance = 0.5f;
 
