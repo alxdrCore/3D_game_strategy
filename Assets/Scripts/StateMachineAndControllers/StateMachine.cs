@@ -11,10 +11,13 @@ public class StateMachine : MonoBehaviour
     [SerializeField, HideInInspector] private Unit _unit;
 
     [SerializeField] private UnitVisual _unitVisual;
+    public RunState runState;
+    public AttackState attackState;
+    public IdleState idleState;
     public State currentState;
     private void Start()
     {
-        currentState = State.Idle;
+        SetState(idleState);
     }
     private void Update()
     {
@@ -22,7 +25,6 @@ public class StateMachine : MonoBehaviour
     }
     private void OnEnable()
     {
-        //_unitLogic.OnEnemyListChange += CheckState;
         _unitLogic.OnNewIntent += HandleNewIntent;
     }
 
@@ -95,65 +97,23 @@ public class StateMachine : MonoBehaviour
     {
         if (newState == currentState)
             return;
-
         switch(newState)
         {
-            case State.Chase:
-                if(_unitLogic.currentIntent == Intent.Attack || !_unit.holdPosition )
+            case IdleState:
                     break;
+            case AttackState:
                 return;
-            case State.Combat:
-                if(_unitLogic.currentIntent == Intent.Attack || _unit.autoAttackEnabled)
-                    break;
+            case RunState:
                 return;
             default:
                 break;
         }
-        
-        OnStateExit(currentState);
-        ChangeAnimatorState(currentState, false);
-        ChangeAnimatorState(newState, true);
         currentState = newState;
     }
-    private void OnStateExit(State state)
-    {
-        switch (state)
-        {
-            case State.Idle:
-                break;
-            case State.Chase:
-                break;
-            case State.Combat:
-                break;
-            case State.MoveTo:
-                break;
-            default:
-                break;
-        }
-    }
-    private void ChangeAnimatorState(State state, bool isActive)
-    {
-        switch (state)
-        {
-            case State.Idle:
-                _unitVisual.SetAnimatorIdle(isActive);
-                break;
-            case State.Chase:
-                _unitVisual.SetAnimatorChase(isActive);
-                break;
-            case State.Combat:
-                _unitVisual.SetAnimatorCombat(isActive);
-                break;
-            case State.MoveTo:
-                _unitVisual.SetAnimatorChase(isActive);
-                break;
-            default:
-                break;
-        }
-    }
+    
     private void OnDisable()
     {
-        //_unitLogic.OnEnemyListChange -= CheckState;
+        _unitLogic.OnNewIntent -= HandleNewIntent;
     }
     private void OnValidate()
     {

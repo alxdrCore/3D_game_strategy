@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class UnitLogic : MonoBehaviour
 {
+    
+
     public event EventHandler OnEnemyListChange;
     public event Action<Intent> OnNewIntent;
     [SerializeField, HideInInspector] private UnitMovement _unitMovement;
@@ -59,13 +61,13 @@ public class UnitLogic : MonoBehaviour
                 Idle();
                 break;
             case State.Chase:
-                Chasing();
+                UpdateChase();
                 break;
             case State.Combat:
-                Combat();
+                UpdateCombat();
                 break;
             case State.MoveTo:
-                MovingTo();
+                UpdateMoveTo();
                 break;
             default:
                 break;
@@ -76,25 +78,33 @@ public class UnitLogic : MonoBehaviour
         //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
     }
 
-    private void Chasing()
+    private void UpdateChase()
     {
         if(targetToAttack == null)
             targetToAttack = GetTargetToChase();
         if (_agent.destination != targetToAttack.position)
             SetUnitDestination(targetToAttack.position);
 
+        if (enemiesToAttack.Contains(targetToAttack))
+                    _stateMachine.SetState(State.Combat);
+                else
+                {
+                    if (!enemiesToChase.Contains(targetToAttack))
+                        enemiesToChase.Add(targetToAttack);
+                    _stateMachine.SetState(State.Chase);
+                }
         // if (HasEnemiesToChase() && !_unit.holdPosition)
         //     SetUnitDestination(_enemiesToChase[0].position);
         // _unitVisual.AimAt(_enemiesToChase[0]);
 
     }
-    private void MovingTo()
+    private void UpdateMoveTo()
     {
         //ignore everything
 
 
     }
-    private void Combat()
+    private void UpdateCombat()
     {
         //Do combat with aim at
         //_unitVisual.AimAt(_targetToAttack);
@@ -121,12 +131,12 @@ public class UnitLogic : MonoBehaviour
         //Add check if unit has Attack opportunity
 
     }
-    private Transform GetTargetToAttack()
+    public Transform GetTargetToAttack()
     {
         //Should be complexed logic of getting nearest enemy or smth
         return enemiesToAttack.Count > 0 ? enemiesToAttack[0] : null;
     }
-    private Transform GetTargetToChase()
+    public Transform GetTargetToChase()
     {
         //Should be complexed logic of getting nearest enemy or smth
         return enemiesToChase.Count > 0 ? enemiesToChase[0] : null;
