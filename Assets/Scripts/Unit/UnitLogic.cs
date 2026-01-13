@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class UnitLogic : MonoBehaviour
 {
-    
 
     public event EventHandler OnEnemyListChange;
     public event Action<Intent> OnNewIntent;
@@ -33,7 +32,15 @@ public class UnitLogic : MonoBehaviour
 
     private void Update()
     {
-        HandleStates();
+        _stateMachine.currentState.Update();
+    }
+    public bool IsInAttackRange(Transform target)
+    {
+        return enemiesToAttack.Contains(target);
+    }
+    public bool IsInChaseRange(Transform target)
+    {
+        return enemiesToChase.Contains(target);
     }
     public void SetChaseDistance(float chaseDistance)
     {
@@ -49,78 +56,17 @@ public class UnitLogic : MonoBehaviour
             currentIntent = newIntent;
         OnNewIntent?.Invoke(currentIntent);
     }
-    private void SetUnitDestination(Vector3 destinationPoint)
+    public void SetUnitDestination(Vector3 destinationPoint)
     {
         _unitMovement.SetDestination(destinationPoint);
     }
-    private void HandleStates()
-    {
-        switch (_stateMachine.currentState)
-        {
-            case State.Idle:
-                Idle();
-                break;
-            case State.Chase:
-                UpdateChase();
-                break;
-            case State.Combat:
-                UpdateCombat();
-                break;
-            case State.MoveTo:
-                UpdateMoveTo();
-                break;
-            default:
-                break;
-        }
-    }
-    private void Idle()
-    {
-        //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
-    }
-
-    private void UpdateChase()
-    {
-        if(targetToAttack == null)
-            targetToAttack = GetTargetToChase();
-        if (_agent.destination != targetToAttack.position)
-            SetUnitDestination(targetToAttack.position);
-
-        if (enemiesToAttack.Contains(targetToAttack))
-                    _stateMachine.SetState(State.Combat);
-                else
-                {
-                    if (!enemiesToChase.Contains(targetToAttack))
-                        enemiesToChase.Add(targetToAttack);
-                    _stateMachine.SetState(State.Chase);
-                }
-        // if (HasEnemiesToChase() && !_unit.holdPosition)
-        //     SetUnitDestination(_enemiesToChase[0].position);
-        // _unitVisual.AimAt(_enemiesToChase[0]);
-
-    }
-    private void UpdateMoveTo()
-    {
-        //ignore everything
-
-
-    }
-    private void UpdateCombat()
-    {
-        //Do combat with aim at
-        //_unitVisual.AimAt(_targetToAttack);
-        if (targetToAttack == null)
-        {
-            targetToAttack = GetTargetToAttack();
-        }
-        //Get event if target died, then set intent to default
-    }
     public void OrderToMoveTo(RaycastHit destinationHit)
     {
-        SetNewIntent(Intent.MoveTo);
-
         targetToAttack = null;
 
         SetUnitDestination(destinationHit.point);
+
+        SetNewIntent(Intent.MoveTo);
     }
     public void OrderToAttack(Transform enemyToAttack)
     {
@@ -144,7 +90,7 @@ public class UnitLogic : MonoBehaviour
     private void UnitLogic_OnEnemyEnterAttackZone(Transform enemy)
     {
         //add subscribe to enemy death event and if event then remove from all lists
-        if (enemiesToAttack.Contains(enemy))
+        if (IsInAttackRange(enemy))
             return;
         enemiesToAttack.Add(enemy);
         OnEnemyListChange?.Invoke(this, EventArgs.Empty);
@@ -152,7 +98,7 @@ public class UnitLogic : MonoBehaviour
     private void UnitLogic_OnEnemyEnterChaseZone(Transform enemy)
     {
         //add subscribe to enemy death event and if event then remove from all lists
-        if (enemiesToChase.Contains(enemy))
+        if (IsInChaseRange(enemy))
             return;
         enemiesToChase.Add(enemy);
         OnEnemyListChange?.Invoke(this, EventArgs.Empty);
@@ -177,7 +123,6 @@ public class UnitLogic : MonoBehaviour
 
         listToRemoveFrom.Remove(enemy);
     }
-
 
     private void OnDisable()
     {

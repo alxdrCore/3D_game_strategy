@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class State : MonoBehaviour
 {
@@ -8,8 +9,10 @@ public abstract class State : MonoBehaviour
 
     public float time => Time.time - startTime;
 
+    protected Unit unit;
     protected UnitVisual unitVisual;
     protected UnitLogic unitLogic;
+    protected NavMeshAgent agent;
     protected StateMachine stateMachine;
     public virtual void Enter() { }
     public virtual void Update() { }

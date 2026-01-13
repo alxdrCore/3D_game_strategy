@@ -5,27 +5,20 @@ public class IdleState : State
     public override void Enter()
     {
         unitVisual.SetAnimatorIdle(true);
+        agent.ResetPath();
+        agent.velocity = Vector3.zero;
     }
     public override void Update()
     {
-        switch(unitLogic.currentIntent)
-        {
-            case Intent.Attack:
-                if(unitLogic.targetToAttack != null && unitLogic.enemiesToAttack.Contains(unitLogic.targetToAttack))
-                    stateMachine.SetState(State.AttackState)
-                break;
+        //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
 
-        }
-        if(unitLogic.currentIntent == Intent.Attack && unitLogic.enemiesToAttack.Contains(unitLogic.targetToAttack))
-        {
-            Exit();
-
-
-        }
+        if (unitLogic.enemiesToAttack.Count > 0 && unit.autoAttack)
+            stateMachine.SelectState();
+        if (unitLogic.enemiesToChase.Count > 0 && unit.autoChase)
+            stateMachine.SelectState();
     }
     public override void Exit()
     {
         unitVisual.SetAnimatorIdle(false);
-        
     }
 }

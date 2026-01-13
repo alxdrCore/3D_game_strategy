@@ -4,8 +4,8 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField] private UnitLogic _unitLogic;
-    [SerializeField] public bool holdPosition;
-    [SerializeField] public bool autoAttackEnabled = true;
+    [SerializeField] public bool autoChase;
+    [SerializeField] public bool autoAttack = true;
     [SerializeField] private float _chaseDistance = 8f;
     [SerializeField] private float _attackDistance = 0.5f;
 
