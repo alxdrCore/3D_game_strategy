@@ -3,29 +3,32 @@ using UnityEngine.AI;
 
 public abstract class State : MonoBehaviour
 {
-
+    public bool isComplete {get; protected set;}
     protected float startTime;
     public float time => Time.time - startTime;
 
-    protected Unit unit;
-    protected UnitVisual unitVisual;
-    protected UnitLogic unitLogic;
-    protected NavMeshAgent agent;
-    protected StateMachine stateMachine;
+    protected Core core;
+
+    protected Unit unit => core.unit;
+    protected UnitVisual unitVisual => core.unitVisual;
+    protected NavMeshAgent agent => core.agent;
+    protected AttackSensor attackSensor => core.attackSensor;
+    protected ChaseSensor chaseSensor => core.chaseSensor;
+    public UnitLogic unitLogic => core.unitLogic;
+
     public virtual void Enter() { }
-    public virtual void StateUpdate() { }
+    public virtual void Do() { }
+    public virtual void FixedDo() { }
+
     public virtual void Exit() { }
 
-    public void Setup(Unit _unit, UnitVisual _unitVisual, UnitLogic _unitLogic, NavMeshAgent _agent, StateMachine _stateMachine)
+    public void SetCore(Core _core)
     {
-        unit = _unit;
-        unitVisual = _unitVisual;
-        unitLogic = _unitLogic;
-        agent = _agent;
-        stateMachine = _stateMachine;
+        core = _core;
     }
     public void Initialize()
     {
+        isComplete = false;
         startTime = Time.time;
     }
 

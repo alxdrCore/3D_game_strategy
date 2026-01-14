@@ -221,9 +221,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1227924189739740083}
-  - component: {fileID: 7582000163427134149}
   - component: {fileID: 7486649178961946825}
-  - component: {fileID: 1775392389287454855}
+  - component: {fileID: 4907355625919170768}
   m_Layer: 0
   m_Name: ZondbeLogic
   m_TagString: Untagged
@@ -249,19 +248,6 @@ Transform:
   - {fileID: 6111497819665156918}
   m_Father: {fileID: 5073619114102567217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7582000163427134149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4887675284486520083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec401aa1d881474bbfaa07651bd7eb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
-  _agent: {fileID: 7335539222920975321}
 --- !u!114 &7486649178961946825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,18 +260,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bed5caf663206e4abaddb47d2169b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitLogic
-  _unitMovement: {fileID: 7582000163427134149}
-  _stateMachine: {fileID: 1775392389287454855}
-  _unit: {fileID: 7415093632001542980}
-  _attackController: {fileID: 3862959853756504889}
-  _chaseController: {fileID: 5224603406229216415}
-  _agent: {fileID: 7335539222920975321}
-  _unitVisual: {fileID: 483334504067386198}
+  unit: {fileID: 7415093632001542980}
+  unitVisual: {fileID: 483334504067386198}
+  agent: {fileID: 7335539222920975321}
+  chaseSensor: {fileID: 5224603406229216415}
+  attackSensor: {fileID: 3862959853756504889}
+  unitLogic: {fileID: 7486649178961946825}
   currentIntent: 2
-  enemiesToAttack: []
-  enemiesToChase: []
+  moveToState: {fileID: 1412575048656337116}
+  attackState: {fileID: 4496924280625673684}
+  idleState: {fileID: 2465077705884741840}
+  chaseState: {fileID: 7513769599483354009}
   targetToAttack: {fileID: 0}
---- !u!114 &1775392389287454855
+  playerPriority: 0
+--- !u!114 &4907355625919170768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,18 +282,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4887675284486520083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8309671d51e9c4cb613a14a128c251, type: 3}
+  m_Script: {fileID: 11500000, guid: d675d27ff664c1d48aca224a6ff59aef, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StateHandler
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   _unitLogic: {fileID: 7486649178961946825}
-  _agent: {fileID: 7335539222920975321}
-  _unit: {fileID: 7415093632001542980}
-  _unitVisual: {fileID: 483334504067386198}
-  moveToState: {fileID: 1412575048656337116}
-  attackState: {fileID: 4496924280625673684}
-  idleState: {fileID: 2465077705884741840}
-  chaseState: {fileID: 7513769599483354009}
-  currentState: {fileID: 0}
 --- !u!1 &5526026176108314259
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa18c512e9b47b41bc182b4e56d8a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackController
+  enemiesToAttack: []
+  _attackDistance: 0.5
 --- !u!1 &8389907116296559557
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,6 +508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9691138f7d5704498eae1d509ed8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChaseController
+  enemiesToChase: []
+  _chaseDistance: 8
 --- !u!1 &8550009804135182342
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,8 +695,6 @@ MonoBehaviour:
   _unitLogic: {fileID: 7486649178961946825}
   autoChase: 0
   autoAttack: 1
-  _chaseDistance: 8
-  _attackDistance: 1
 --- !u!1001 &3196983313386437901
 PrefabInstance:
   m_ObjectHideFlags: 0

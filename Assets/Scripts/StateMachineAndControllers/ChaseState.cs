@@ -6,27 +6,35 @@ public class ChaseState : State
     {
         unitVisual.SetAnimatorChase(true);
     }
-    public override void StateUpdate()
+    public override void Do()
     {
+        // way too much of if statements in mind. Nedd to figure it out
+
+
         //could be moduled for easier scale and fix 'n stuff
-        if (unitLogic.targetToAttack == null)
+        if (unitLogic.targetToAttack == null && unit.autoChase && chaseSensor.HasEnemiesTochase())
         {
-            unitLogic.targetToAttack = unitLogic.GetTargetToChase();
+            unitLogic.targetToAttack = chaseSensor.GetTargetToChase();
         }
         if (unitLogic.targetToAttack == null)
         {
             Debug.Log("Error - State : Chase. Target to chase == null and GetTargetToChase == null. No chase target at all");
-            stateMachine.SelectState();
+            isComplete = true;
         }
         //fix amount of setunitdestination, because it may appear way to often;
-        if (agent.destination != unitLogic.targetToAttack.position)
-            unitLogic.SetUnitDestination(unitLogic.targetToAttack.position);
+        if (!chaseSensor.IsInChaseRange(unitLogic.targetToAttack) && !unitLogic.playerPriority && unit.autoChase && chaseSensor.HasEnemiesTochase())
+            unitLogic.targetToAttack = chaseSensor.GetTargetToChase();
 
-        if (unitLogic.targetToAttack != null)
+        if (agent.destination != unitLogic.targetToAttack.position)
+        {
+            unitLogic.SetDestination(unitLogic.targetToAttack.position);
             unitVisual.AimAt(unitLogic.targetToAttack);
 
-        if (unitLogic.IsInAttackRange(unitLogic.targetToAttack))
-            stateMachine.SelectState();
+        }
+
+
+        if (attackSensor.IsInAttackRange(unitLogic.targetToAttack) || (!unitLogic.playerPriority && unit.autoAttack && attackSensor.HasEnemiesToAttack()))
+            isComplete = true;
     }
     public override void Exit()
     {

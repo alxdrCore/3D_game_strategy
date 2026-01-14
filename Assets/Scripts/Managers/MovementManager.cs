@@ -61,14 +61,14 @@ public class MovementManager : MonoBehaviour
     {
         foreach (var unit in selectedUnits)
         {
-            unit.GetComponentInChildren<UnitLogic>().OrderToMoveTo(destinationHit);
+            unit.GetComponentInChildren<PlayerMovement>().OrderToMoveTo(destinationHit);
         }
     }
     private void SendToAttack(List<GameObject> selectedUnits, RaycastHit destinationHit)
     {
         foreach (var unit in selectedUnits)
         {
-            unit.GetComponentInChildren<UnitLogic>().OrderToAttack(destinationHit.transform);
+            unit.GetComponentInChildren<PlayerMovement>().OrderToAttack(destinationHit.transform);
         }
     }
     private void OnDisable()

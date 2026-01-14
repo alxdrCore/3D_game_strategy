@@ -6,18 +6,16 @@ public class MoveToState : State
     {
         unitVisual.SetAnimatorChase(true);
     }
-    public override void StateUpdate()
+    public override void Do()
     {
         //potentially dangerous cause path variables
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)
         {
-            unitLogic.SetNewIntent(Intent.Default);
-            stateMachine.SelectState();
+            isComplete = true;
         }
     }
     public override void Exit()
     {
         unitVisual.SetAnimatorChase(false);
-
     }
 }

@@ -8,14 +8,11 @@ public class IdleState : State
         agent.ResetPath();
         agent.velocity = Vector3.zero;
     }
-    public override void StateUpdate()
+    public override void Do()
     {
         //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
-
-        if (unitLogic.enemiesToAttack.Count > 0 && unit.autoAttack)
-            stateMachine.SelectState();
-        if (unitLogic.enemiesToChase.Count > 0 && unit.autoChase)
-            stateMachine.SelectState();
+        if((unit.autoAttack || unit.autoChase) && (attackSensor.HasEnemiesToAttack() || chaseSensor.HasEnemiesTochase()) )
+            isComplete = true;
     }
     public override void Exit()
     {
