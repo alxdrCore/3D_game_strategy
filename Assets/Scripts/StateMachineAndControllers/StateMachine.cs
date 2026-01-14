@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -47,7 +44,7 @@ public class StateMachine : MonoBehaviour
             case Intent.Attack:
                 if (_unitLogic.IsInAttackRange(_unitLogic.targetToAttack))
                     SetNewState(attackState);
-                else
+                else 
                 {
                     Debug.Log("By Intent module : Chase state is choosed");
 
@@ -87,6 +84,7 @@ public class StateMachine : MonoBehaviour
         if (_newState == currentState)
             return;
         currentState = _newState;
+        currentState.Initialize();
         currentState.Enter();
     }
 

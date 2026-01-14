@@ -5,7 +5,6 @@ public abstract class State : MonoBehaviour
 {
 
     protected float startTime;
-
     public float time => Time.time - startTime;
 
     protected Unit unit;
@@ -24,6 +23,10 @@ public abstract class State : MonoBehaviour
         unitLogic = _unitLogic;
         agent = _agent;
         stateMachine = _stateMachine;
+    }
+    public void Initialize()
+    {
+        startTime = Time.time;
     }
 
 }
