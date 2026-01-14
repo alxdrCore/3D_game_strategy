@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class MovementManager : MonoBehaviour
 {
-    public static MovementManager Instance {get; private set;}
+    public static MovementManager Instance { get; private set; }
     [SerializeField, HideInInspector] private Camera _cam;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _objectAttackableLayer;
 
-    [SerializeField] private GameObject _groundDestinationMarker; 
+    [SerializeField] private GameObject _groundDestinationMarker;
 
     public bool inputMovePriority;
     public bool inputAttackPriority;
     private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -25,7 +25,7 @@ public class MovementManager : MonoBehaviour
     private void Start()
     {
         _cam = Camera.main;
-    } 
+    }
     private void OnEnable()
     {
         GameInput.Instance.OnMouseRightStarted += UnitMovementManager_OnMouseRightStarted;
@@ -33,23 +33,23 @@ public class MovementManager : MonoBehaviour
 
     private void UnitMovementManager_OnMouseRightStarted(object sender, EventArgs e)
     {
-        if(SelectionManager.Instance.unitsSelected.Count <= 0)
+        if (SelectionManager.Instance.unitsSelected.Count <= 0)
             return;
 
         RaycastHit hit;
         Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, _objectAttackableLayer))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _objectAttackableLayer))
         {
             SendToAttack(SelectionManager.Instance.unitsSelected, hit);
         }
-        else if(Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
+        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
         {
             //Sets destination and use input priority to move
             SetDestinationMarker(hit);
             SendToDestination(SelectionManager.Instance.unitsSelected, hit);
         }
     }
-    
+
     private void SetDestinationMarker(RaycastHit destinationHit)
     {
         _groundDestinationMarker.transform.position = destinationHit.point;
@@ -59,20 +59,16 @@ public class MovementManager : MonoBehaviour
     }
     private void SendToDestination(List<GameObject> selectedUnits, RaycastHit destinationHit)
     {
-        foreach(var unit in selectedUnits)
+        foreach (var unit in selectedUnits)
         {
-            //cut to one line
-            UnitLogic _unitLogic= unit.GetComponentInChildren<UnitLogic>();
-            _unitLogic.OrderToMoveTo(destinationHit); 
+            unit.GetComponentInChildren<UnitLogic>().OrderToMoveTo(destinationHit);
         }
     }
     private void SendToAttack(List<GameObject> selectedUnits, RaycastHit destinationHit)
     {
-        foreach(var unit in selectedUnits)
+        foreach (var unit in selectedUnits)
         {
-            //cut to one line
-            UnitLogic _unitLogic= unit.GetComponentInChildren<UnitLogic>();
-            _unitLogic.OrderToAttack(destinationHit.transform); 
+            unit.GetComponentInChildren<UnitLogic>().OrderToAttack(destinationHit.transform);
         }
     }
     private void OnDisable()

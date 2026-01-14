@@ -22,6 +22,7 @@ public class UnitLogic : MonoBehaviour
     public List<Transform> enemiesToChase = new();
 
     public Transform targetToAttack;
+    
     private void OnEnable()
     {
         _attackController.OnEnemyEnterAttackZone += UnitLogic_OnEnemyEnterAttackZone;
@@ -32,7 +33,7 @@ public class UnitLogic : MonoBehaviour
 
     private void Update()
     {
-        _stateMachine.currentState.Update();
+        _stateMachine.currentState.StateUpdate();
     }
     public bool IsInAttackRange(Transform target)
     {

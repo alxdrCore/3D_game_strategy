@@ -16,19 +16,21 @@ public class StateMachine : MonoBehaviour
     public MoveToState moveToState;
     public AttackState attackState;
     public IdleState idleState;
-    public ChaseState _chaseState;
+    public ChaseState chaseState;
     public State currentState;
+    public State newState;
     private void Start()
     {
-        SelectState();
+        moveToState.Setup(_unit, _unitVisual, _unitLogic, _agent, this);
+        attackState.Setup(_unit, _unitVisual, _unitLogic, _agent, this);
+        idleState.Setup(_unit, _unitVisual, _unitLogic, _agent, this);
+        chaseState.Setup(_unit, _unitVisual, _unitLogic, _agent, this);
+
+        currentState = idleState;
     }
     private void Update()
     {
         // Could be useful for states, that can end them self, like move to, or attack (wher intented target is dead)
-        if (currentState.isComplete)
-        {
-            SelectState();
-        }
     }
     private void OnEnable()
     {
@@ -46,7 +48,11 @@ public class StateMachine : MonoBehaviour
                 if (_unitLogic.IsInAttackRange(_unitLogic.targetToAttack))
                     SetNewState(attackState);
                 else
-                    SetNewState(_chaseState);
+                {
+                    Debug.Log("By Intent module : Chase state is choosed");
+
+                    SetNewState(chaseState);
+                }
                 break;
             default:
             case Intent.Default:
@@ -56,13 +62,14 @@ public class StateMachine : MonoBehaviour
     
     public void SelectState()
     {
+        currentState.Exit();
         if(_unitLogic.currentIntent != Intent.Default)
         {
             HandleIntent(_unitLogic.currentIntent);
             return;
         }
 
-        State newState = idleState;
+        newState = idleState;
 
         if (_unitLogic.enemiesToAttack.Count > 0 && _unit.autoAttack)
         {
@@ -70,16 +77,16 @@ public class StateMachine : MonoBehaviour
         }
         else if (_unitLogic.enemiesToChase.Count > 0 && _unit.autoChase)
         {
-            newState = _chaseState;
+            Debug.Log("Choosed chase state to set as active");
+            newState = chaseState;
         }
         SetNewState(newState);
     }
-    private void SetNewState(State newState)
+    private void SetNewState(State _newState)
     {
-        if (newState == currentState)
+        if (_newState == currentState)
             return;
-        currentState.Exit();
-        currentState = newState;
+        currentState = _newState;
         currentState.Enter();
     }
 

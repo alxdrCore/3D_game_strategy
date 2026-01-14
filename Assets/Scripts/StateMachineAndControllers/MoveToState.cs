@@ -6,7 +6,7 @@ public class MoveToState : State
     {
         unitVisual.SetAnimatorChase(true);
     }
-    public override void Update()
+    public override void StateUpdate()
     {
         //potentially dangerous cause path variables
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)

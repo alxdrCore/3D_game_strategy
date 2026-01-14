@@ -6,7 +6,7 @@ public class AttackState : State
     {
         unitVisual.SetAnimatorCombat(true);
     }
-    public override void Update()
+    public override void StateUpdate()
     {
         //Do combat with aim at. Do combat based on intents and autoattack
         //_unitVisual.AimAt(_targetToAttack);

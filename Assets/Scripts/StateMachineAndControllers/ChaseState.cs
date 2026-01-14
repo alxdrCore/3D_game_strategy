@@ -6,7 +6,7 @@ public class ChaseState : State
     {
         unitVisual.SetAnimatorChase(true);
     }
-    public override void Update()
+    public override void StateUpdate()
     {
         //could be moduled for easier scale and fix 'n stuff
         if (unitLogic.targetToAttack == null)

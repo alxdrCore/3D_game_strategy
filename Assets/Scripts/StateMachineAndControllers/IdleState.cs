@@ -8,7 +8,7 @@ public class IdleState : State
         agent.ResetPath();
         agent.velocity = Vector3.zero;
     }
-    public override void Update()
+    public override void StateUpdate()
     {
         //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
 
