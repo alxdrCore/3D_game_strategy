@@ -10,6 +10,9 @@ public class UnitLogic : Core
 
     public Transform targetToAttack;
     public bool playerPriority;
+    public State currentState;
+    public State newState;
+    private bool _stateIsSelected;
     public void Start()
     {
         SetupInstances();
@@ -22,32 +25,73 @@ public class UnitLogic : Core
     private void Update()
     {
         if (machine.state.isComplete)
+        {
             SelectState();
-        machine.state.Do();
+            SetState();
+        }
+        if (!machine.state.isComplete)
+            machine.state.Do();
     }
     public void SelectState()
     {
-        State newState = idleState;
-
-        if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+        if (targetToAttack == null)
         {
-            newState = attackState;
+            if (playerPriority)
+            {
+                newState = moveToState;
+                _stateIsSelected = true;
+                return;
+            }
+            if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+            {
+                newState = attackState;
+                _stateIsSelected = true;
+                return;
+            }
+            if (chaseSensor.HasEnemiesTochase() && unit.autoChase)
+            {
+                newState = chaseState;
+                _stateIsSelected = true;
+                return;
+            }
+            newState = idleState;
+            _stateIsSelected = true;
         }
-        else if (chaseSensor.HasEnemiesTochase() && unit.autoChase)
+        else
         {
-            Debug.Log("Choosed chase state to set as active");
-            newState = chaseState;
+            if (attackSensor.IsInAttackRange(targetToAttack))
+            {
+                newState = attackState;
+                _stateIsSelected = true;
+                return;
+            }
+            if (playerPriority || chaseSensor.IsInChaseRange(targetToAttack))
+            {
+                newState = chaseState;
+                _stateIsSelected = true;
+                return;
+            }
+            targetToAttack = null;
+            return;
         }
-        machine.Set(newState);
     }
-    
+    public void SetState()
+    {
+        if (_stateIsSelected)
+        {
+            machine.Set(newState);
+            currentState = machine.state;
+            _stateIsSelected = false;
+        }
+    }
+
     public void SetDestination(Vector3 destinationPoint)
     {
         agent.SetDestination(destinationPoint);
     }
-    
+
     private void OnDisable()
     {
     }
-    
+
 }

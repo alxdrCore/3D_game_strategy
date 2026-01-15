@@ -8,30 +8,29 @@ public class AttackState : State
     }
     public override void Do()
     {
-        //Do combat with aim at. Do combat based on intents and autoattack
-        //_unitVisual.AimAt(_targetToAttack);
-        if (unitLogic.targetToAttack == null)
+        if(unitLogic.targetToAttack == null)
         {
-            unitLogic.targetToAttack = attackSensor.GetTargetToAttack();
-        }
-        if (unitLogic.targetToAttack == null)
-        {
-            Debug.Log("Error - State : Attack. Target to attack == null and GetTargetToAttack == null. No attack target at all");
+            if(attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+            {
+                unitLogic.targetToAttack = attackSensor.GetTargetToAttack();
+                return;
+            }
             isComplete = true;
         }
-        if (attackSensor.IsInAttackRange(unitLogic.targetToAttack))
+        else
         {
-            //do combat
-        }
-        else if (!unitLogic.playerPriority)
-        {
-            if (unit.autoAttack)
-                unitLogic.targetToAttack = attackSensor.GetTargetToAttack();
-            if (unitLogic.targetToAttack == null)
+            if(attackSensor.IsInAttackRange(unitLogic.targetToAttack))
+            {
+                //Do attack
+                //reset PP : In attack when target is destroyed then check if(unitLogic.playerPriority) -> unitLogic.playerPriority = false
+                return;
+            }
+            if(unitLogic.playerPriority)
+            {
                 isComplete = true;
+            }
+            unitLogic.targetToAttack = null;
         }
-        isComplete = true;
-        //Get event if target died, then set intent to default
     }
     public override void Exit()
     {

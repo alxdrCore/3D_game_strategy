@@ -11,6 +11,7 @@ public class MoveToState : State
         //potentially dangerous cause path variables
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)
         {
+            unitLogic.playerPriority = false;
             isComplete = true;
         }
     }

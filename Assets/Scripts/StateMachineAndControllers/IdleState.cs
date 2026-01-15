@@ -7,11 +7,15 @@ public class IdleState : State
         unitVisual.SetAnimatorIdle(true);
         agent.ResetPath();
         agent.velocity = Vector3.zero;
+        //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
     }
     public override void Do()
     {
-        //Если ныняшняя скорость объекта более 0.01, то выставить место назначения для юнита с параметром его местоположения.
-        if((unit.autoAttack || unit.autoChase) && (attackSensor.HasEnemiesToAttack() || chaseSensor.HasEnemiesTochase()) )
+        if(unitLogic.targetToAttack != null || unitLogic.playerPriority)
+            isComplete = true;
+        if(attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+            isComplete = true;
+        if(chaseSensor.HasEnemiesTochase() && unit.autoChase)
             isComplete = true;
     }
     public override void Exit()

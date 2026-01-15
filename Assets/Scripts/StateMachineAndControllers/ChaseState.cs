@@ -8,33 +8,38 @@ public class ChaseState : State
     }
     public override void Do()
     {
-        // way too much of if statements in mind. Nedd to figure it out
-
-
-        //could be moduled for easier scale and fix 'n stuff
-        if (unitLogic.targetToAttack == null && unit.autoChase && chaseSensor.HasEnemiesTochase())
-        {
-            unitLogic.targetToAttack = chaseSensor.GetTargetToChase();
-        }
         if (unitLogic.targetToAttack == null)
         {
-            Debug.Log("Error - State : Chase. Target to chase == null and GetTargetToChase == null. No chase target at all");
-            isComplete = true;
+            if (unitLogic.playerPriority)
+                isComplete = true;
+            if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+                isComplete = true;
+            if (chaseSensor.HasEnemiesTochase() && unit.autoChase)
+                unitLogic.targetToAttack = chaseSensor.GetTargetToChase();
+            else
+                isComplete = true;
         }
-        //fix amount of setunitdestination, because it may appear way to often;
-        if (!chaseSensor.IsInChaseRange(unitLogic.targetToAttack) && !unitLogic.playerPriority && unit.autoChase && chaseSensor.HasEnemiesTochase())
-            unitLogic.targetToAttack = chaseSensor.GetTargetToChase();
-
+        else
+        {
+            if (attackSensor.IsInAttackRange(unitLogic.targetToAttack))
+                isComplete = true;
+            if (chaseSensor.IsInChaseRange(unitLogic.targetToAttack) || unitLogic.playerPriority)
+            {
+                ChaseAction();
+                return;
+            }
+            else
+                unitLogic.targetToAttack = null;
+        }
+    }
+    private void ChaseAction()
+    {
         if (agent.destination != unitLogic.targetToAttack.position)
         {
             unitLogic.SetDestination(unitLogic.targetToAttack.position);
             unitVisual.AimAt(unitLogic.targetToAttack);
-
         }
 
-
-        if (attackSensor.IsInAttackRange(unitLogic.targetToAttack) || (!unitLogic.playerPriority && unit.autoAttack && attackSensor.HasEnemiesToAttack()))
-            isComplete = true;
     }
     public override void Exit()
     {
