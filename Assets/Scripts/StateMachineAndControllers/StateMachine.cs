@@ -15,5 +15,4 @@ public class StateMachine
             state.Enter();
         }
     }
-
 }

@@ -3,8 +3,6 @@ using System;
 
 public class UnitLogic : Core
 {
-    public event EventHandler OnEnemyListChange;
-    public Intent currentIntent = Intent.Default;
     public MoveToState moveToState;
     public AttackState attackState;
     public IdleState idleState;
@@ -29,13 +27,6 @@ public class UnitLogic : Core
     }
     public void SelectState()
     {
-        //should be checked, bcause intents are off
-        if (currentIntent != Intent.Default)
-        {
-            HandleIntent();
-            return;
-        }
-
         State newState = idleState;
 
         if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
@@ -48,24 +39,6 @@ public class UnitLogic : Core
             newState = chaseState;
         }
         machine.Set(newState);
-    }
-    private void HandleIntent()
-    {
-        switch (currentIntent)
-        {
-            case Intent.Attack:
-                if (attackSensor.IsInAttackRange(targetToAttack))
-                    machine.Set(attackState);
-                else
-                {
-                    Debug.Log("By Intent module : Chase state is choosed");
-                    machine.Set(chaseState);
-                }
-                break;
-            default:
-            case Intent.Default:
-                break;
-        }
     }
     
     public void SetDestination(Vector3 destinationPoint)
