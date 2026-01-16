@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class ChaseSensor : MonoBehaviour
 {
     public List<Transform> enemiesToChase = new();
-    public event Action<Transform> OnEnemyEnterChaseZone;
-    public event Action<Transform> OnEnemyExitChaseZone;
     [SerializeField] private float _chaseDistance = 8f;
 
     private void Start()
@@ -18,21 +16,19 @@ public class ChaseSensor : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            OnEnemyEnterChaseZone?.Invoke(other.transform);
+            if (IsInChaseList(other.transform))
+                return;
+            enemiesToChase.Add(other.transform);
         }
-        if (IsInChaseRange(other.transform))
-            return;
-        enemiesToChase.Add(other.transform);
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            OnEnemyExitChaseZone?.Invoke(other.transform);
             RemoveEnemyFromChaseList(other.transform);
         }
     }
-    public bool IsInChaseRange(Transform target)
+    public bool IsInChaseList(Transform target)
     {
         return enemiesToChase.Contains(target);
     }
@@ -52,7 +48,7 @@ public class ChaseSensor : MonoBehaviour
     private void RemoveEnemyFromChaseList(Transform enemy)
     {
         // If removable enemy is not target to attack
-        if (!enemiesToChase.Contains(enemy))
+        if (!IsInChaseList(enemy))
             return;
         enemiesToChase.Remove(enemy);
     }

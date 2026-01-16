@@ -11,8 +11,6 @@ public class MovementManager : MonoBehaviour
 
     [SerializeField] private GameObject _groundDestinationMarker;
 
-    public bool inputMovePriority;
-    public bool inputAttackPriority;
     private void Awake()
     {
         if (Instance != null && Instance != this)

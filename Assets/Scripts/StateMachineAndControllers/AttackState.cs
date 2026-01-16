@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class AttackState : State
 {
+    [SerializeField] private float _attackRate = 1f;
+    private float _attackTimer = 0f;
     public override void Enter()
     {
         unitVisual.SetAnimatorCombat(true);
@@ -19,10 +21,11 @@ public class AttackState : State
         }
         else
         {
-            if(attackSensor.IsInAttackRange(unitLogic.targetToAttack))
+            if(attackSensor.IsInAttackList(unitLogic.targetToAttack))
             {
                 //Do attack
                 //reset PP : In attack when target is destroyed then check if(unitLogic.playerPriority) -> unitLogic.playerPriority = false
+                Combat();
                 return;
             }
             if(unitLogic.playerPriority)
@@ -31,6 +34,21 @@ public class AttackState : State
             }
             unitLogic.targetToAttack = null;
         }
+    }
+    private void Combat()
+    {
+        //attack tta
+        if(_attackTimer <= 0 )
+        {
+            _attackTimer = 1f/_attackRate;
+            Attack();
+        }
+        //maybe should have else{}
+        _attackTimer -= Time.deltaTime;
+    }
+    private void Attack()
+    {
+        unitLogic.targetToAttack.GetComponent<Unit>().TakeDamage(unit.damage);
     }
     public override void Exit()
     {

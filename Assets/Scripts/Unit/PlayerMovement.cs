@@ -3,10 +3,14 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private UnitLogic _unitLogic;
-    
+
+
     public void OrderToMoveTo(RaycastHit destinationHit)
     {
-        _unitLogic.targetToAttack = null;
+        if (_unitLogic.attackSensor != null)
+        {
+            _unitLogic.targetToAttack = null;
+        }
 
         _unitLogic.playerPriority = true;
 
@@ -17,12 +21,16 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OrderToAttack(Transform enemyToAttack)
     {
-        _unitLogic.targetToAttack = enemyToAttack;
+        if (_unitLogic.attackSensor != null)
+        {
+            _unitLogic.targetToAttack = enemyToAttack;
 
-        _unitLogic.playerPriority = true;
+            _unitLogic.playerPriority = true;
 
-        _unitLogic.machine.Set(_unitLogic.attackState);
+            _unitLogic.machine.Set(_unitLogic.attackState);
 
-        //Add check if unit has Attack opportunity
+            //Add check if unit has Attack opportunity
+        }
     }
+
 }

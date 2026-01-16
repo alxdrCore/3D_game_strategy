@@ -8,22 +8,29 @@ public class ChaseState : State
     }
     public override void Do()
     {
+        Debug.Log($"Chase State: target={unitLogic.targetToAttack?.name}, playerPriority={unitLogic.playerPriority}, isComplete={isComplete}");
         if (unitLogic.targetToAttack == null)
         {
             if (unitLogic.playerPriority)
                 isComplete = true;
+
             if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
                 isComplete = true;
+
             if (chaseSensor.HasEnemiesTochase() && unit.autoChase)
+            {
                 unitLogic.targetToAttack = chaseSensor.GetTargetToChase();
+                Debug.Log("Got new target to chase");
+            }
             else
                 isComplete = true;
         }
         else
         {
-            if (attackSensor.IsInAttackRange(unitLogic.targetToAttack))
+            if (attackSensor.IsInAttackList(unitLogic.targetToAttack))
                 isComplete = true;
-            if (chaseSensor.IsInChaseRange(unitLogic.targetToAttack) || unitLogic.playerPriority)
+
+            if (chaseSensor.IsInChaseList(unitLogic.targetToAttack) || unitLogic.playerPriority)
             {
                 ChaseAction();
                 return;
@@ -34,6 +41,7 @@ public class ChaseState : State
     }
     private void ChaseAction()
     {
+        Debug.Log("Chase action is activated");
         if (agent.destination != unitLogic.targetToAttack.position)
         {
             unitLogic.SetDestination(unitLogic.targetToAttack.position);

@@ -7,8 +7,6 @@ public class AttackSensor : MonoBehaviour
 {
     public List<Transform> enemiesToAttack = new();
 
-    public event Action<Transform> OnEnemyEnterAttackZone;
-    public event Action<Transform> OnEnemyExitAttackZone;
 
     [SerializeField] private float _attackDistance = 0.5f;
 
@@ -18,25 +16,21 @@ public class AttackSensor : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Enemy"))
-            return;
-
-        OnEnemyEnterAttackZone?.Invoke(other.transform);
-        if (IsInAttackRange(other.transform))
-            return;
-
-        enemiesToAttack.Add(other.transform);
-
+        if (other.CompareTag("Enemy"))
+        {
+            if (IsInAttackList(other.transform))
+                return;
+            enemiesToAttack.Add(other.transform);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            OnEnemyExitAttackZone?.Invoke(other.transform);
             RemoveEnemyFromAttackList(other.transform);
         }
     }
-    public bool IsInAttackRange(Transform target)
+    public bool IsInAttackList(Transform target)
     {
         return enemiesToAttack.Contains(target);
     }
@@ -51,7 +45,7 @@ public class AttackSensor : MonoBehaviour
     }
     private void RemoveEnemyFromAttackList(Transform enemy)
     {
-        if (!enemiesToAttack.Contains(enemy))
+        if (!IsInAttackList(enemy))
             return;
         enemiesToAttack.Remove(enemy);
     }
