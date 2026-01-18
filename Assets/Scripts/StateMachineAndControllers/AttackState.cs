@@ -3,13 +3,13 @@ using UnityEngine;
 public class AttackState : State
 {
     [SerializeField] private float _attackRate = 1f;
-    private float _attackTimer = 0f;
+    private float _attackTimer;
     public override void Enter()
     {
-        unitVisual.SetAnimatorCombat(true);
     }
     public override void Do()
     {
+        
         if(unitLogic.targetToAttack == null)
         {
             if(attackSensor.HasEnemiesToAttack() && unit.autoAttack)
@@ -37,18 +37,21 @@ public class AttackState : State
     }
     private void Combat()
     {
+        unitVisual.SetAnimatorCombat(true);
         //attack tta
         if(_attackTimer <= 0 )
         {
             _attackTimer = 1f/_attackRate;
             Attack();
         }
-        //maybe should have else{}
         _attackTimer -= Time.deltaTime;
+        //maybe should have else
     }
     private void Attack()
     {
+        unitVisual.SetAnimatorAttack();
         unitLogic.targetToAttack.GetComponent<Unit>().TakeDamage(unit.damage);
+
     }
     public override void Exit()
     {

@@ -33,6 +33,7 @@ Transform:
   - {fileID: 113078317935635167}
   - {fileID: 7079359311259580138}
   - {fileID: 8440657673836564142}
+  - {fileID: 7785082844392653198}
   m_Father: {fileID: 1227924189739740083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1879699053170304855
@@ -79,6 +80,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1e3f837b0d5bf4a9530a39d740f503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleState
+--- !u!1 &3288856992316308814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7785082844392653198}
+  - component: {fileID: 533598333622628642}
+  m_Layer: 0
+  m_Name: Death
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7785082844392653198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3288856992316308814}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6111497819665156918}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &533598333622628642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3288856992316308814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abfee5419cb08e145a532ff649b42a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathState
 --- !u!1 &3803213710235917902
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +315,7 @@ MonoBehaviour:
   attackState: {fileID: 4496924280625673684}
   idleState: {fileID: 2465077705884741840}
   chaseState: {fileID: 7513769599483354009}
+  deathState: {fileID: 0}
   targetToAttack: {fileID: 0}
   playerPriority: 0
   newState: {fileID: 0}

@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     [SerializeField] public int damage;
     [SerializeField] private int _healthMax;
     [SerializeField] private int _healthCurrent;
-    [SerializeField]private HealthTracker _healthTracker;
+    [SerializeField] private HealthTracker _healthTracker;
     private void Start()
     {
         _healthCurrent = _healthMax;
@@ -29,15 +29,12 @@ public class Unit : MonoBehaviour
             _healthCurrent = 0;
             //Dying logic. For now - destroy
             //Dying animation & sound
-            Destroy(gameObject);
+            _unitLogic.machine.Set(_unitLogic.deathState);
         }
-        
         UpdateHealthUI();
-
     }
     private void UpdateHealthUI()
     {
-        _healthTracker.UpdateSliderValue(_healthMax, _healthCurrent);
-        
+        _healthTracker.UpdateSliderValue(_healthCurrent, _healthMax);
     }
 }

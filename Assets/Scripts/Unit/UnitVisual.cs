@@ -7,6 +7,7 @@ public class UnitVisual : MonoBehaviour
     private readonly static int Combat = Animator.StringToHash(IsCombat);
     private readonly static int Idle = Animator.StringToHash(IsIdle);
     private readonly static int Attack = Animator.StringToHash(IsAttack);
+    private readonly static int Death = Animator.StringToHash(OnDeath);
     [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _selectIndicator;
     [SerializeField] private GameObject _hoverIndicator;
@@ -14,6 +15,7 @@ public class UnitVisual : MonoBehaviour
     private const string IsCombat = "Combat";
     private const string IsAttack = "Attack";
     private const string IsIdle = "Idle";
+    private const string OnDeath = "Death";
     private bool _aimAtIsActive;
     private Transform _entityToLookAt;
     
@@ -41,6 +43,14 @@ public class UnitVisual : MonoBehaviour
     public void SetAnimatorIdle(bool state)
     {
         _animator.SetBool(Idle, state);
+    }
+    public void SetAnimatorDeath()
+    {
+        _animator.SetTrigger(Death);
+    }
+    public void SetAnimatorAttack()
+    {
+        _animator.SetTrigger(Attack);
     }
     private void LookAtEntity()
     {

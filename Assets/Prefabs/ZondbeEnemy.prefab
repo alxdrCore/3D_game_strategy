@@ -301,9 +301,9 @@ GameObject:
   - component: {fileID: 2897734595510704868}
   - component: {fileID: 4654196226548623336}
   - component: {fileID: 26611126506172920}
-  - component: {fileID: 5629772790623243533}
   - component: {fileID: 233600773650705860}
   - component: {fileID: 3826315979463624663}
+  - component: {fileID: 5629772790623243533}
   m_Layer: 11
   m_Name: ZondbeEnemy
   m_TagString: Enemy
@@ -343,7 +343,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0.9
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -374,25 +374,6 @@ CapsuleCollider:
   m_Height: 1.4092329
   m_Direction: 1
   m_Center: {x: 0.016963065, y: 0.74440515, z: 0.012691796}
---- !u!114 &5629772790623243533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2408423029543455857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ec8d6e25fbd08046a6c27d770ec29df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit
-  _unitLogic: {fileID: 6111178362956007999}
-  autoChase: 0
-  autoAttack: 0
-  damage: 1
-  _healthMax: 7
-  _healthCurrent: 0
-  _healthTracker: {fileID: 131786706548962910}
 --- !u!54 &233600773650705860
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -434,6 +415,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SimplePatrol
   _enemyTransform: {fileID: 2897734595510704868}
   _speed: 1
+--- !u!114 &5629772790623243533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408423029543455857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ec8d6e25fbd08046a6c27d770ec29df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  _unitLogic: {fileID: 6111178362956007999}
+  autoChase: 0
+  autoAttack: 0
+  damage: 1
+  _healthMax: 7
+  _healthCurrent: 0
+  _healthTracker: {fileID: 131786706548962910}
 --- !u!1 &4526222686410596190
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,6 +492,7 @@ MonoBehaviour:
   attackState: {fileID: 2330326888430084486}
   idleState: {fileID: 2661542660095243371}
   chaseState: {fileID: 2627261948113629648}
+  deathState: {fileID: 0}
   targetToAttack: {fileID: 0}
   playerPriority: 0
   newState: {fileID: 0}
@@ -541,6 +542,7 @@ Transform:
   - {fileID: 6778077215437638872}
   - {fileID: 8856971692355002521}
   - {fileID: 3453549540765721886}
+  - {fileID: 2141503517472646408}
   m_Father: {fileID: 2180609555692475126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4986259346805831202
@@ -743,7 +745,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackController
   enemiesToAttack: []
-  _attackDistance: 0.5
+  _attackDistance: 1.1
+--- !u!1 &8606395720712877176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141503517472646408}
+  - component: {fileID: 5274769541957589784}
+  m_Layer: 0
+  m_Name: Death
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2141503517472646408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606395720712877176}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 140209821345165681}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5274769541957589784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606395720712877176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abfee5419cb08e145a532ff649b42a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathState
 --- !u!1001 &848041026262575099
 PrefabInstance:
   m_ObjectHideFlags: 0

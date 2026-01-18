@@ -7,10 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OrderToMoveTo(RaycastHit destinationHit)
     {
-        if (_unitLogic.attackSensor != null)
-        {
-            _unitLogic.targetToAttack = null;
-        }
+        _unitLogic.targetToAttack = null;
 
         _unitLogic.playerPriority = true;
 
@@ -21,16 +18,13 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OrderToAttack(Transform enemyToAttack)
     {
-        if (_unitLogic.attackSensor != null)
-        {
-            _unitLogic.targetToAttack = enemyToAttack;
+        _unitLogic.targetToAttack = enemyToAttack;
 
-            _unitLogic.playerPriority = true;
+        _unitLogic.playerPriority = true;
 
-            _unitLogic.machine.Set(_unitLogic.attackState);
+        _unitLogic.machine.Set(_unitLogic.attackState);
 
-            //Add check if unit has Attack opportunity
-        }
+        //Add check if unit has Attack opportunity
     }
 
 }

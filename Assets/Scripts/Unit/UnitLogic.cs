@@ -7,6 +7,7 @@ public class UnitLogic : Core
     public AttackState attackState;
     public IdleState idleState;
     public ChaseState chaseState;
+    public DeathState deathState;
 
     public Transform targetToAttack;
     public bool playerPriority;
