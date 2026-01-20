@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IdleState : State
@@ -11,15 +12,25 @@ public class IdleState : State
     }
     public override void Do()
     {
-        if(unitLogic.targetToAttack != null || unitLogic.playerPriority)
+        if (unitLogic.targetToAttack != null || unitLogic.playerPriority)
+        {
             isComplete = true;
-        if(attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+            return;
+        }
+        if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
+        {
             isComplete = true;
-        if(chaseSensor.HasEnemiesTochase() && unit.autoChase)
+            return;
+        }
+        if (chaseSensor.HasEnemiesTochase() && unit.autoChase)
+        {
             isComplete = true;
+            return;
+        }
     }
     public override void Exit()
     {
         unitVisual.SetAnimatorIdle(false);
     }
+
 }

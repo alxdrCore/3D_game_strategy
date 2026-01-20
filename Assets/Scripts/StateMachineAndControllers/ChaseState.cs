@@ -47,7 +47,6 @@ public class ChaseState : State
             unitLogic.SetDestination(unitLogic.targetToAttack.position);
             unitVisual.AimAt(unitLogic.targetToAttack);
         }
-
     }
     public override void Exit()
     {

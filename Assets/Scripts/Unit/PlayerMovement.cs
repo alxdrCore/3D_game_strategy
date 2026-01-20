@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OrderToMoveTo(RaycastHit destinationHit)
     {
+        Debug.Log("Sent order to move");
         _unitLogic.targetToAttack = null;
 
         _unitLogic.playerPriority = true;

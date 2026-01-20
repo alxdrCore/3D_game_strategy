@@ -4988,6 +4988,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 92009857683567212, guid: 5930d075013637e418302315bcdd314c, type: 3}
   m_PrefabInstance: {fileID: 2114351036}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &903697223 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 533598333622628642, guid: 3214673dca161b048abec8d0c81fe195, type: 3}
+  m_PrefabInstance: {fileID: 1409056302}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abfee5419cb08e145a532ff649b42a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathState
 --- !u!4 &909100993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 92009857683567212, guid: 5930d075013637e418302315bcdd314c, type: 3}
@@ -7264,6 +7275,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a20c3d598ff7e841b03d48a018345fb, type: 3}
+--- !u!114 &1275623653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5274769541957589784, guid: 5460d77ccc286194dadcc83307e04c58, type: 3}
+  m_PrefabInstance: {fileID: 3883971808912942902}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abfee5419cb08e145a532ff649b42a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathState
 --- !u!4 &1276553838 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1195333326288330256, guid: 1a20c3d598ff7e841b03d48a018345fb, type: 3}
@@ -8073,6 +8095,10 @@ PrefabInstance:
       propertyPath: autoAttack
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7486649178961946825, guid: 3214673dca161b048abec8d0c81fe195, type: 3}
+      propertyPath: deathState
+      value: 
+      objectReference: {fileID: 903697223}
     - target: {fileID: 8659508171347948281, guid: 3214673dca161b048abec8d0c81fe195, type: 3}
       propertyPath: m_Name
       value: Zondbe (2)
@@ -11900,6 +11926,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6111178362956007999, guid: 5460d77ccc286194dadcc83307e04c58, type: 3}
+      propertyPath: deathState
+      value: 
+      objectReference: {fileID: 1275623653}
     - target: {fileID: 8454057522531211985, guid: 5460d77ccc286194dadcc83307e04c58, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

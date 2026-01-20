@@ -11,6 +11,7 @@ public class StateMachine
         {
             state?.Exit();
             state = newState;
+            Debug.Log("New state : " + newState);
             state.Initialize();
             state.Enter();
         }

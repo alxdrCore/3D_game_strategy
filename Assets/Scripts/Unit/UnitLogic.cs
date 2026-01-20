@@ -11,7 +11,7 @@ public class UnitLogic : Core
 
     public Transform targetToAttack;
     public bool playerPriority;
-    public State newState;
+    public State nextState;
     public void Start()
     {
         SetupInstances();
@@ -26,50 +26,55 @@ public class UnitLogic : Core
         if (machine.state.isComplete)
         {
             SelectState();
-            machine.Set(newState);
+            SetNextState();
         }
         machine.state.Do();
     }
     public void SelectState()
     {
+        Debug.Log("Current tta : " + targetToAttack);
         if (targetToAttack == null)
         {
             if (playerPriority)
             {
-                newState = moveToState;
+                nextState = moveToState;
                 return;
             }
             if (attackSensor.HasEnemiesToAttack() && unit.autoAttack)
             {
-                newState = attackState;
+                nextState = attackState;
                 return;
             }
             if (chaseSensor.HasEnemiesTochase() && unit.autoChase)
             {
-                newState = chaseState;
+                nextState = chaseState;
                 return;
             }
-            newState = idleState;
+            nextState = idleState;
         }
         else
         {
             if (attackSensor.IsInAttackList(targetToAttack))
             {
-                newState = attackState;
+                nextState = attackState;
                 return;
             }
             if (playerPriority || chaseSensor.IsInChaseList(targetToAttack))
             {
-                newState = chaseState;
+                nextState = chaseState;
                 return;
             }
             targetToAttack = null;
             return;
         }
     }
-    public void SetState()
+    public void SetNextState()
     {
-        machine.Set(newState);
+        if(nextState == null)
+            return;
+        
+        machine.Set(nextState);
+        nextState = null;
     }
 
     public void SetDestination(Vector3 destinationPoint)

@@ -13,6 +13,7 @@ public class MoveToState : State
         {
             unitLogic.playerPriority = false;
             isComplete = true;
+            return;
         }
     }
     public override void Exit()
