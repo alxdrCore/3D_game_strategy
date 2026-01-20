@@ -7,7 +7,6 @@ public class AttackSensor : MonoBehaviour
 {
     public List<Transform> enemiesToAttack = new();
 
-
     [SerializeField] private float _attackDistance = 0.5f;
 
     private void Start()
@@ -17,18 +16,23 @@ public class AttackSensor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
-        {
-            if (IsInAttackList(other.transform))
-                return;
-            enemiesToAttack.Add(other.transform);
-        }
+            AddEnemyToAttack(other.transform);
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
             RemoveEnemyFromAttackList(other.transform);
+            other.GetComponent<Unit>().OnUnitDeath -= OnEnemyDeath_OnUnitDeath;
         }
+    }
+    private void AddEnemyToAttack(Transform enemy)
+    {
+        if (IsInAttackList(enemy.transform))
+            return;
+
+        enemiesToAttack.Add(enemy.transform);
+        enemy.GetComponent<Unit>().OnUnitDeath += OnEnemyDeath_OnUnitDeath;
     }
     public bool IsInAttackList(Transform target)
     {
@@ -41,7 +45,12 @@ public class AttackSensor : MonoBehaviour
     }
     public bool HasEnemiesToAttack()
     {
-        return enemiesToAttack.Count >0;
+        return enemiesToAttack.Count > 0;
+    }
+    private void OnEnemyDeath_OnUnitDeath(Unit deadEnemy)
+    {
+        deadEnemy.OnUnitDeath -= OnEnemyDeath_OnUnitDeath;
+        RemoveEnemyFromAttackList(deadEnemy.transform);
     }
     private void RemoveEnemyFromAttackList(Transform enemy)
     {

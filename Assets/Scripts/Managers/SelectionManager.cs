@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
 {
-    public static SelectionManager Instance {get; private set;}
+    public static SelectionManager Instance { get; private set; }
     [SerializeField] private LayerMask _ground;
     [SerializeField] private LayerMask _clickable;
 
@@ -37,14 +37,14 @@ public class SelectionManager : MonoBehaviour
         Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
         HandleUnitHovering(ray);
     }
-    
+
     private void HandleUnitHovering(Ray ray)
     {
-        if(Physics.Raycast(ray, out _hit, Mathf.Infinity, _clickable))
+        if (Physics.Raycast(ray, out _hit, Mathf.Infinity, _clickable))
         {
-            if(_hit.collider.gameObject == _unitHovered)
+            if (_hit.collider.gameObject == _unitHovered)
                 return;
-            if(_unitHovered != null)
+            if (_unitHovered != null)
             {
                 SwitchHover(_unitHovered, false);
                 _unitHovered = null;
@@ -54,7 +54,7 @@ public class SelectionManager : MonoBehaviour
         }
         else
         {
-            if(_unitHovered != null)
+            if (_unitHovered != null)
             {
                 SwitchHover(_unitHovered, false);
                 _unitHovered = null;
@@ -64,13 +64,13 @@ public class SelectionManager : MonoBehaviour
     private void OnLeftClickStarted(object sender, EventArgs e)
     {
         Ray ray = _cam.ScreenPointToRay(GameInput.Instance.GetMousePosition());
-        if(!Physics.Raycast(ray, out _hit, Mathf.Infinity, _clickable))
+        if (!Physics.Raycast(ray, out _hit, Mathf.Infinity, _clickable))
         {
-            if(!GameInput.Instance.LeftShift_IsPressed())
+            if (!GameInput.Instance.LeftShift_IsPressed())
                 DeselectAll();
             return;
         }
-        if(GameInput.Instance.LeftShift_IsPressed())
+        if (GameInput.Instance.LeftShift_IsPressed())
         {
             MultipleSelection(_hit.collider.gameObject);
         }
@@ -87,7 +87,7 @@ public class SelectionManager : MonoBehaviour
     }
     private void MultipleSelection(GameObject unit)
     {
-        if(unitsSelected.Contains(unit))
+        if (unitsSelected.Contains(unit))
         {
             RemoveUnitFromSelected(unit);
         }
@@ -98,7 +98,7 @@ public class SelectionManager : MonoBehaviour
     }
     public void DragSelect(GameObject unit)
     {
-        if(unitsSelected.Contains(unit) == false)
+        if (unitsSelected.Contains(unit) == false)
         {
             AddUnitToSelected(unit);
         }
@@ -108,7 +108,7 @@ public class SelectionManager : MonoBehaviour
         unitsSelected.Add(unit);
         SwitchSelectionIndicator(unit, true);
     }
-    private void RemoveUnitFromSelected(GameObject unit)
+    public void RemoveUnitFromSelected(GameObject unit)
     {
         SwitchSelectionIndicator(unit, false);
         unitsSelected.Remove(unit);
@@ -123,7 +123,7 @@ public class SelectionManager : MonoBehaviour
     }
     public void DeselectAll()
     {
-        foreach(var unit in unitsSelected)
+        foreach (var unit in unitsSelected)
         {
             SwitchSelectionIndicator(unit, false);
         }
@@ -131,7 +131,7 @@ public class SelectionManager : MonoBehaviour
     }
     private void OnValidate()
     {
-        if(_cam == null)
+        if (_cam == null)
             _cam = GetComponent<Camera>();
     }
 }

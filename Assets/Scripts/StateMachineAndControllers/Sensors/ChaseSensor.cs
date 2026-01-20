@@ -15,18 +15,22 @@ public class ChaseSensor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
-        {
-            if (IsInChaseList(other.transform))
-                return;
-            enemiesToChase.Add(other.transform);
-        }
+            AddEnemyToChase(other.transform);
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
             RemoveEnemyFromChaseList(other.transform);
+            other.GetComponent<Unit>().OnUnitDeath -= OnEnemyDeath_OnUnitDeath;
         }
+    }
+    private void AddEnemyToChase(Transform enemy)
+    {
+        if (IsInChaseList(enemy.transform))
+            return;
+        enemiesToChase.Add(enemy.transform);
+        enemy.GetComponent<Unit>().OnUnitDeath += OnEnemyDeath_OnUnitDeath;
     }
     public bool IsInChaseList(Transform target)
     {
@@ -45,6 +49,12 @@ public class ChaseSensor : MonoBehaviour
         //Should be complexed logic of getting nearest enemy or smth
         return enemiesToChase.Count > 0 ? enemiesToChase[0] : null;
     }
+    private void OnEnemyDeath_OnUnitDeath(Unit unitEnemy)
+    {
+        unitEnemy.OnUnitDeath -= OnEnemyDeath_OnUnitDeath;
+        RemoveEnemyFromChaseList(unitEnemy.transform);
+    }
+
     private void RemoveEnemyFromChaseList(Transform enemy)
     {
         // If removable enemy is not target to attack

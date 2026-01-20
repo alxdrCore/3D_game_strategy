@@ -1,8 +1,12 @@
+using System;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 
 public class Unit : MonoBehaviour
 {
+    public event Action<Unit> OnUnitDeath;
     [SerializeField] private UnitLogic _unitLogic;
     [SerializeField] public bool autoChase;
     [SerializeField] public bool autoAttack = true;
@@ -15,10 +19,6 @@ public class Unit : MonoBehaviour
         _healthCurrent = _healthMax;
         SelectionManager.Instance.unitsAll.Add(gameObject);
         UpdateHealthUI();
-    }
-    private void OnDestroy()
-    {
-        SelectionManager.Instance.unitsAll.Remove(gameObject);
     }
     internal void TakeDamage(int damageToInflict)
     {
@@ -36,5 +36,14 @@ public class Unit : MonoBehaviour
     private void UpdateHealthUI()
     {
         _healthTracker.UpdateSliderValue(_healthCurrent, _healthMax);
+    }
+    private void OnDestroy()
+    {
+        OnUnitDeath?.Invoke(this);
+        if(SelectionManager.Instance.unitsSelected.Contains(this.gameObject))
+        {
+            SelectionManager.Instance.RemoveUnitFromSelected(this.gameObject);
+        }
+        SelectionManager.Instance.unitsAll.Remove(gameObject);
     }
 }
